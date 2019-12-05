@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonces - Proxi'Car{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>L'annonce</h1>
+        <p> Mise en ligne le {{ annonce.anndate|date }} </p> 
+        <p> Par {{ annonce.annAuteur }} </p>
+        <p> {{ annonce.anntitre }} </p>
+        <p> {{ annonce.anncontenu }} </p> 
+</div>
+
+{% endblock %}
