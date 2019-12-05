@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact - Proxi'Car{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Nous Contacter</h1>
+
+            {{ form_start(contactForm) }}
+                <div class="form-group">{{ form_row(contactForm.name) }}</div> 
+                <div class="form-group">{{ form_row(contactForm.email) }}</div>
+                <div class="form-group">{{ form_row(contactForm.message) }}</div>
+                <div class="form-group">{{ form_row(contactForm.agreeTerms) }}</div>
+                
+                <button class="btn btn-lg btn-primary" type="submit">Envoyer</button>
+            {{ form_end(contactForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

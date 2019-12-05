@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - Proxi'Car{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Inscription</h1>
+
+            {{ form_start(registrationForm) }}
+                <div class="form-group">{{ form_row(registrationForm.email) }}</div> 
+                <div class="form-group">{{ form_row(registrationForm.plainPassword) }}</div>
+                <div class="form-group">{{ form_row(registrationForm.name) }}</div>
+                <div class="form-group">{{ form_row(registrationForm.pseudo) }}</div>
+                <div class="form-group">{{ form_row(registrationForm.num_tel) }}</div>
+                <div class="form-group">{{ form_row(registrationForm.agreeTerms) }}</div>
+
+                <button class="btn btn-lg btn-primary" type="submit">S'inscrire</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
