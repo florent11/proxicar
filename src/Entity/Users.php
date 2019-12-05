@@ -5,10 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UsersRepository")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class Users implements UserInterface
 {
@@ -46,19 +48,14 @@ class Users implements UserInterface
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      */
     private $pseudo;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $num_tel;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $user_admin;
 
     public function __construct()
     {
@@ -198,26 +195,14 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getNumTel(): ?int
+    public function getNumTel(): ?string
     {
         return $this->num_tel;
     }
 
-    public function setNumTel(int $num_tel): self
+    public function setNumTel(string $num_tel): self
     {
         $this->num_tel = $num_tel;
-
-        return $this;
-    }
-
-    public function getUserAdmin(): ?bool
-    {
-        return $this->user_admin;
-    }
-
-    public function setUserAdmin(bool $user_admin): self
-    {
-        $this->user_admin = $user_admin;
 
         return $this;
     }

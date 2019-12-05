@@ -3,12 +3,19 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnnoncesRepository")
  */
 class Annonces
 {
+    /**
+     * @Gedmo\Slug(fields={"ann_titre"})
+     * @ORM\Column(length=100, unique=true)
+     */
+    private $slug;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -56,6 +63,51 @@ class Annonces
      * @ORM\JoinColumn(nullable=false)
      */
     private $users;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $marque;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $modele;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $annee_modele;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $kilometre;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $carburant;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $boite_de_vitesse;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $ann_supprimee;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $ann_moderee;
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
     public function getId(): ?int
     {
@@ -154,6 +206,102 @@ class Annonces
     public function setUsers(?Users $users): self
     {
         $this->users = $users;
+
+        return $this;
+    }
+
+    public function getMarque(): ?string
+    {
+        return $this->marque;
+    }
+
+    public function setMarque(string $marque): self
+    {
+        $this->marque = $marque;
+
+        return $this;
+    }
+
+    public function getModele(): ?string
+    {
+        return $this->modele;
+    }
+
+    public function setModele(string $modele): self
+    {
+        $this->modele = $modele;
+
+        return $this;
+    }
+
+    public function getAnneeModele(): ?int
+    {
+        return $this->annee_modele;
+    }
+
+    public function setAnneeModele(int $annee_modele): self
+    {
+        $this->annee_modele = $annee_modele;
+
+        return $this;
+    }
+
+    public function getKilometre(): ?int
+    {
+        return $this->kilometre;
+    }
+
+    public function setKilometre(int $kilometre): self
+    {
+        $this->kilometre = $kilometre;
+
+        return $this;
+    }
+
+    public function getCarburant(): ?string
+    {
+        return $this->carburant;
+    }
+
+    public function setCarburant(string $carburant): self
+    {
+        $this->carburant = $carburant;
+
+        return $this;
+    }
+
+    public function getBoiteDeVitesse(): ?string
+    {
+        return $this->boite_de_vitesse;
+    }
+
+    public function setBoiteDeVitesse(string $boite_de_vitesse): self
+    {
+        $this->boite_de_vitesse = $boite_de_vitesse;
+
+        return $this;
+    }
+
+    public function getAnnSupprimee(): ?bool
+    {
+        return $this->ann_supprimee;
+    }
+
+    public function setAnnSupprimee(bool $ann_supprimee): self
+    {
+        $this->ann_supprimee = $ann_supprimee;
+
+        return $this;
+    }
+
+    public function getAnnModeree(): ?bool
+    {
+        return $this->ann_moderee;
+    }
+
+    public function setAnnModeree(bool $ann_moderee): self
+    {
+        $this->ann_moderee = $ann_moderee;
 
         return $this;
     }
