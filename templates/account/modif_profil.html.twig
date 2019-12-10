@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du profil utilisateur{% endblock %}
+
+{% block body %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>Modification du profil utilisateur</h1>
+    
+                {{ form_start(modifUserProfilForm) }}
+                    <div class="form-group">{{ form_row(modifUserProfilForm.email) }}</div> 
+                    <div class="form-group">{{ form_row(modifUserProfilForm.name) }}</div>
+                    <div class="form-group">{{ form_row(modifUserProfilForm.pseudo) }}</div>
+                    <div class="form-group">{{ form_row(modifUserProfilForm.num_tel) }}</div>
+    
+                    <button class="btn btn-lg btn-primary" type="submit">Enregistrer les modifications</button>
+                {{ form_end(modifUserProfilForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
