@@ -19,7 +19,7 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $contact=$form->getData();
+            $contact = $form->getData();
             $this->addFlash(
                 'notice',
                 'Votre message a été envoyé.'

@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Users;
-use MessageFormatter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
