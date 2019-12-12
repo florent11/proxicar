@@ -7,6 +7,11 @@
     <div class="row">
         <div class="col-md-8">
             <h1>Nous Contacter</h1>
+            {% for message in app.flashes('notice') %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
 
             {{ form_start(contactForm) }}
                 <div class="form-group">{{ form_row(contactForm.name) }}</div> 
