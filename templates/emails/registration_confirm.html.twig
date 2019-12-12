@@ -1,20 +1,62 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <style type="text/css">
+       
+        body {
+            background-color: #333;
+        }
+
+        .container {
+            background-color: #E1E1E1;
+            font-family: serif;
+            margin-top: 1%;
+            margin-left: 8%;
+            margin-right: 8%;
+        }
+
+        .header{
+            background-color: #333;
+            color: #E1E1E1;
+            font-size: 38px;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 1%;
+        }
+
+        #message {
+            padding-top: 1%;
+            padding-bottom: 1%;
+            padding-left: 3%;
+            padding-right: 3%;
+        }
+
+        h1 {
+            display:block;
+            font-size:26px;
+            font-style:normal;
+            font-weight:bold;
+            line-height:100%;
+        }
+
+        p {
+            display:block;
+            font-size:23px;
+            font-style:normal;
+            font-weight:normal;
+            line-height:100%;
+        }
+        </style>
     </head>
     <body>
         <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <h1>Bienvenue chez Proxi'Car</h1>
-                    <p>Bonjour {{ name }}, votre inscription est bien enregistrée dans notre base de donnée avec votre adresse email :</br> {{ email }}.</p>
-                    <p>Vous pouvez désormais vous connecter à votre espace client afin de gérer la publication de vos annonces.</p>
-                    <p>Notre équipe se tient à votre disposition par email si besoin et vous répond dans les meilleurs délais.</br> Cordialement.</p>
-                    <p>L'équipe Proxi'Car</p>
-                </div>
+            <div class="header">Proxi'Car</div>
+            <div id="message">
+                <h1>Bienvenue chez Proxi'Car</h1>
+                <p>Bonjour {{ name }}, votre inscription est bien enregistrée dans notre base de donnée avec votre adresse email :</br> {{ email }}.</p>
+                <p>Vous pouvez désormais vous connecter à votre espace client afin de gérer la publication de vos annonces.</p>
+                <p>Notre équipe se tient à votre disposition par email si besoin et vous répond dans les meilleurs délais.</p>
+                <p>Cordialement </br> L'équipe Proxi'Car</p>     
             </div>
         </div>     
     </body>
