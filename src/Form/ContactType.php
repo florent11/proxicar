@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -41,7 +42,7 @@ class ContactType extends AbstractType
                     ])
                 ]
             ])
-            ->add('message', TextareaType::class, [
+            ->add('message', CKEditorType::class, [
                 'label' => 'Contenu',
                 'attr' => ['placeholder' => 'Votre Message', 'class' => 'form-control'
                 ],
