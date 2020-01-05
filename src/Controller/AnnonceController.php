@@ -3,12 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Annonces;
+use App\Form\ModifAnnonceType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class AnnonceController extends AbstractController
 {
     /**
+     * Affichage de toutes les annonces
+     * 
      * @Route("/annonces", name="annonces")
      */
     public function listAnnonces()
@@ -21,6 +26,8 @@ class AnnonceController extends AbstractController
     }
 
     /**
+     * Affichage d'une annonce précise
+     * 
      * @Route("/annonce/{slug}", name="annonce")
      */
     public function displayAnnonce($slug)
@@ -31,4 +38,35 @@ class AnnonceController extends AbstractController
             'annonce' => $annonce
         ]);
     }
+
+    /**
+     * Formulaire de modification d'une annonce
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
+     * @Route("/modif-annonce/{id}", name="modif_annonce")
+     */
+    public function modifAnnonce(Request $request, $id)
+    {
+        $annonce = $this->getDoctrine()->getRepository(Annonces::class)->find($id);
+
+        $form = $this->createForm(ModifAnnonceType::class, $annonce);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'notice',
+                'Les modifications ont été enregistrées avec succès !'
+            );
+        }
+        return $this->render('annonce/modif_annonce.html.twig', [
+            'modifAnnonceForm' => $form->createView(),
+        ]);
+    }
 }
+

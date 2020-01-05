@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification de l'annonce{% endblock %}
+
+{% block body %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>Modification de l'annonce</h1>
+    
+                {{ form_start(modifAnnonceForm) }}
+                    <div class="form-group">{{ form_row(modifAnnonceForm.ann_titre) }}</div>
+                    <div class="form-group">{{ form_row(modifAnnonceForm.marque) }}</div>
+                    <div class="form-group">{{ form_row(modifAnnonceForm.modele) }}</div> 
+                    <div class="form-group">{{ form_row(modifAnnonceForm.annee_modele) }}</div>
+                    <div class="form-group">{{ form_row(modifAnnonceForm.kilometre) }}</div>
+                    <div class="form-group">{{ form_row(modifAnnonceForm.carburant) }}</div>
+                    <div class="form-group">{{ form_row(modifAnnonceForm.boite_de_vitesse) }}</div>
+                    <div class="form-group">{{ form_row(modifAnnonceForm.ann_contenu) }}</div>
+
+                    <button class="btn btn-lg btn-primary" type="submit">Enregistrer les modifications</button>
+                {{ form_end(modifAnnonceForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
