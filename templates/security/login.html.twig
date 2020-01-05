@@ -7,6 +7,18 @@
     <div class="row">
         <div class="col-md-8">
             <form method="post">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    
+                    {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
@@ -26,6 +38,8 @@
                 <input type="hidden" name="_csrf_token"
                     value="{{ csrf_token('authenticate') }}"
                 >
+
+                <a class="nav-link forgot-password" href="{{ path('forgot_user_password') }}">Mots de passe oublié ?</a>
 
                 {#
                     Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
