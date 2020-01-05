@@ -17,7 +17,7 @@
             <p> Mise en ligne le {{ annonce.anndate|date }} </p> 
             <p> Par {{ annonce.annAuteur }} </p>
             <p> {{ annonce.anntitre }} </p>
-            <p> {{ annonce.anncontenu }} </p>
+            <p> {{ annonce.anncontenu|raw }} </p>
         {% endfor %}
 </div>
 
