@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Form\ProfilType;
 use App\Form\ResettingType;
+use App\Form\ModifPasswordType;
 use App\Form\ForgotPasswordType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +16,20 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class AccountController extends AbstractController
 {
+    /**
+     * Affichage du panneau Utilisateur
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
+     * @Route("/user-panel", name="user_panel")
+     */
+    public function displayUserPanel()
+    {
+        return $this->render('account/user_panel.html.twig', [
+            'controller_name' => 'Mon Compte Utilisateur'
+        ]);
+    }
+
     /**
      * Formulaire de Modification du profil utilisateur
      * 
@@ -40,10 +54,52 @@ class AccountController extends AbstractController
                 'notice',
                 'Les modifications ont été enregistrées avec succès !'
             );
+
+            return $this->redirectToRoute('user_panel');
         }
 
         return $this->render('account/modif_profil.html.twig', [
             'modifUserProfilForm' => $form->createView(),
+        ]);
+    }
+
+     /**
+     * Formulaire de Modification du mots de passe
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
+     * @Route("/modif-password", name="edit_user_password")
+     */
+    public function editUserPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $user = $this->getUser();
+
+        $form = $this->createForm(ModifPasswordType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Le nouveau mots de passe a été enregistré !'
+            );
+
+            return $this->redirectToRoute('user_panel');
+        }
+
+        return $this->render('account/modif_password.html.twig', [
+            'modifUserPasswordForm' => $form->createView(),
         ]);
     }
 
@@ -104,7 +160,7 @@ class AccountController extends AbstractController
     /**
     * Traitement de l'inscription du nouveau mots de passe (Mots de passe réinitialisé)
     *
-    * @Route("/{id}/{token}", name="resetting")
+    * @Route("/reset/{id}/{token}", name="resetting")
     */
     public function resetting(Users $user, $token, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {

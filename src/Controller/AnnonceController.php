@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Annonces;
+use App\Form\CreerAnnonceType;
 use App\Form\ModifAnnonceType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AnnonceController extends AbstractController
 {
@@ -33,9 +35,59 @@ class AnnonceController extends AbstractController
     public function displayAnnonce($slug)
     {
         $annonce = $this->getDoctrine()->getRepository(Annonces::class)->findOneBy(['slug' => $slug]);
-       // dd($annonces);
+        //dd($annonce);
         return $this->render('annonce/annonce_article.html.twig', [
             'annonce' => $annonce
+        ]);
+    }
+
+    /**
+     * Affichage du panneau de Gestion des annonces publiées
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
+     * @Route("/gestion-annonces", name="gestion_annonces")
+     */
+    public function displayAnnManager()
+    {
+        $userAnnonces = $this->getUser()->getAnnonces();
+        dd($userAnnonces);
+        return $this->render('account/gestion_annonces.html.twig', [
+            'controller_name' => 'Gestion Des Annonces'
+        ]);
+    }
+
+    /**
+     * Formulaire de création d'une annonce
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
+     * @Route("/creer-annonce", name="creer_annonce")
+     */
+    public function creerAnnonce(Request $request): Response
+    {
+        $annonce = new Annonces;
+
+        $form = $this->createForm(CreerAnnonceType::class, $annonce);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $annonce->setAnnDate(new \DateTime('now'));
+            $annonce->setUsers($this->getUser());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'notice',
+                'L\'annonce a été soumise au modérateur pour validation.'
+            );
+
+            return $this->redirectToRoute('user_panel');
+        }
+        return $this->render('annonce/creer_annonce.html.twig', [
+            'creerAnnonceForm' => $form->createView(),
         ]);
     }
 
@@ -60,9 +112,11 @@ class AnnonceController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash(
-                'notice',
+                'success',
                 'Les modifications ont été enregistrées avec succès !'
             );
+
+            return $this->redirectToRoute('user_panel');
         }
         return $this->render('annonce/modif_annonce.html.twig', [
             'modifAnnonceForm' => $form->createView(),

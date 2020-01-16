@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compte Utilisateur - Proxi'Car{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    Bonjour {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+                </div>
+            {% endif %}
+
+            <h1>{{ controller_name }}</h1>  
+        </div>
+        <div class="col-md-6 text-center icon-userpanel-1">
+            <i class="fas fa-car"></i>
+            <h2>Gérer mes annonces<h2>
+            <ul class="items-panel-1">
+                <li>
+                    <a class="nav-link" href="{{ path('gestion_annonces') }}">Gérer les annonces publiées</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{{ path('creer_annonce') }}">Créer une annonce</a>
+                </li>
+            </ul>
+        </div>
+            
+        <div class="col-md-6 text-center icon-userpanel-2">
+            <i class="fas fa-user-edit"></i>
+            <h2>Gérer mon compte<h2>
+            <ul class="items-panel-2">
+                <li>
+                    <a class="nav-link" href="{{ path('edit_user_profil') }}">Modifier les informations de profil</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{{ path('edit_user_password') }}">Changer mon mots de passe</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{{ path('annonces') }}">Supprimer mon compte</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{asset('js/slide.js')}}"></script>
+{% endblock %}
