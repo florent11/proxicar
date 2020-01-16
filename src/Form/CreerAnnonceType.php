@@ -79,7 +79,7 @@ class CreerAnnonceType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Indiquez si le carburant est Essence ou Diesel.',
+                        'message' => 'Indiquez le type d\'énergie de votre véhicule.',
                     ]),
                 ]
             ])

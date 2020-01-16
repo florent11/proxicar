@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ModifAnnonceType extends AbstractType
 {
@@ -65,19 +66,30 @@ class ModifAnnonceType extends AbstractType
                     ]),
                 ]
             ])
-            ->add('carburant', TextType::class, [
-                'label' => 'Carburant',
-                'attr' => ['placeholder' => 'Carburant', 'class' => 'form-control'
+            ->add('carburant', ChoiceType::class, [ 
+                'attr' => ['class' => 'form-control'
+                ],
+                'placeholder' => 'Sélectionner',
+                'choices' => [
+                    'Essence' => 'essence',
+                    'Diesel' => 'diesel',
+                    'Electrique' => 'electrique',
+                    'Hybride' => 'hybride',
+                    'GPL' => 'gpl'
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Indiquez si votre véhicule est Essence ou Diesel.',
+                        'message' => 'Indiquez le type d\'énergie de votre véhicule.',
                     ]),
                 ]
             ])
-            ->add('boite_de_vitesse', TextType::class, [
-                'label' => 'Boite de vitesse',
-                'attr' => ['placeholder' => 'Boite de vitesse', 'class' => 'form-control'
+            ->add('boite_de_vitesse', ChoiceType::class, [ 
+                'attr' => ['class' => 'form-control'
+                ],
+                'placeholder' => 'Sélectionner',
+                'choices' => [
+                    'Manuelle' => 'manuelle',
+                    'Automatique'=> 'automatique'
                 ],
                 'constraints' => [
                     new NotBlank([
