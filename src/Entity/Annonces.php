@@ -29,11 +29,6 @@ class Annonces
     private $ann_date;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $ann_auteur;
-
-    /**
      * @ORM\Column(type="string", length=100)
      */
     private $ann_titre;
@@ -46,17 +41,17 @@ class Annonces
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ann_a_valider;
+    private $ann_a_valider = true;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ann_signaler;
+    private $ann_signaler = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ann_moderer;
+    private $ann_moderer = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="annonces")
@@ -97,12 +92,12 @@ class Annonces
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ann_supprimee;
+    private $ann_supprimee = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ann_moderee;
+    private $ann_moderee = false;
 
     public function getSlug()
     {
@@ -122,18 +117,6 @@ class Annonces
     public function setAnnDate(\DateTimeInterface $ann_date): self
     {
         $this->ann_date = $ann_date;
-
-        return $this;
-    }
-
-    public function getAnnAuteur(): ?string
-    {
-        return $this->ann_auteur;
-    }
-
-    public function setAnnAuteur(string $ann_auteur): self
-    {
-        $this->ann_auteur = $ann_auteur;
 
         return $this;
     }
