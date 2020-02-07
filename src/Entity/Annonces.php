@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnnoncesRepository")
+ * @Vich\Uploadable
  */
 class Annonces
 {
@@ -49,11 +52,6 @@ class Annonces
     private $ann_signaler = false;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $ann_moderer = false;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="annonces")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -92,12 +90,29 @@ class Annonces
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ann_supprimee = false;
+    private $ann_moderee = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ann_moderee = false;
+    private $ann_active = true;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $ann_prix;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $featured_image;
+
+    /**
+     * @Vich\UploadableField(mapping="featured_images", fileNameProperty="featured_image")
+     * @var File
+     */
+    private $imageFile;
 
     public function getSlug()
     {
@@ -165,18 +180,6 @@ class Annonces
     public function setAnnSignaler(bool $ann_signaler): self
     {
         $this->ann_signaler = $ann_signaler;
-
-        return $this;
-    }
-
-    public function getAnnModerer(): ?bool
-    {
-        return $this->ann_moderer;
-    }
-
-    public function setAnnModerer(bool $ann_moderer): self
-    {
-        $this->ann_moderer = $ann_moderer;
 
         return $this;
     }
@@ -265,18 +268,6 @@ class Annonces
         return $this;
     }
 
-    public function getAnnSupprimee(): ?bool
-    {
-        return $this->ann_supprimee;
-    }
-
-    public function setAnnSupprimee(bool $ann_supprimee): self
-    {
-        $this->ann_supprimee = $ann_supprimee;
-
-        return $this;
-    }
-
     public function getAnnModeree(): ?bool
     {
         return $this->ann_moderee;
@@ -285,6 +276,56 @@ class Annonces
     public function setAnnModeree(bool $ann_moderee): self
     {
         $this->ann_moderee = $ann_moderee;
+
+        return $this;
+    }
+
+    public function getAnnActive(): ?bool
+    {
+        return $this->ann_active;
+    }
+
+    public function setAnnActive(bool $ann_active): self
+    {
+        $this->ann_active = $ann_active;
+
+        return $this;
+    }
+
+    public function getAnnPrix(): ?int
+    {
+        return $this->ann_prix;
+    }
+
+    public function setAnnPrix(int $ann_prix): self
+    {
+        $this->ann_prix = $ann_prix;
+
+        return $this;
+    }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        if ($image) {
+            $this->updated_at = new \DateTime('now');
+        }
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    public function getFeaturedImage()
+    {
+        return $this->featured_image;
+    }
+
+    public function setFeaturedImage($featured_image)
+    {
+        $this->featured_image = $featured_image;
 
         return $this;
     }
