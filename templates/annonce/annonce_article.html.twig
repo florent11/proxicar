@@ -6,10 +6,12 @@
 
 <div class="container">
     <h1>L'annonce</h1>
-        <p> Mise en ligne le {{ annonce.anndate|date }} </p> 
+        <p> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'D MMMM Y') }} </p> 
         <p> Par {{ annonce.users.pseudo }} </p>
         <p> {{ annonce.anntitre }} </p>
         <p> {{ annonce.anncontenu|raw }} </p> 
+        <p> {{ annonce.annprix }} Euros </p>
+        <img src="{{ vich_uploader_asset(annonce, 'imageFile')|imagine_filter('article')  }}" alt="Image"> 
 </div>
 
 {% endblock %}

@@ -15,7 +15,7 @@
             margin-right: 8%;
         }
 
-        .header {
+        .header{
             background-color: #333;
             color: #E1E1E1;
             font-size: 38px;
@@ -46,40 +46,19 @@
             font-weight:normal;
             line-height:100%;
         }
-
-        a {
-            color:#fff;
-            background-color:#008cba;
-            border-color:#0079a1;
-            font-size:22px;
-            font-style:normal;
-            font-weight:normal;
-            padding-left:0.5rem;
-            padding-right:0.5rem;
-            padding-top:0.2em;
-            padding-bottom:0.2em;
-            border-radius: 10px;
-        }
-
-        a:hover {
-            color:#E0E0E0;
-            background-color:#006f94;
-            border-color:#006687;
-        }
-
-        a:link {
-            text-decoration:none;
-        } 
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">Proxi'Car</div>
             <div id="message">
-                <h1>Réinitialisation du Mots de passe</h1>
-                <p>Bonjour {{ name }}, </br> Veuillez trouver ci-joint le lien cliquable afin de saisir votre nouveau mots de passe.</p>
-                <a href="{{ absolute_url(path('resetting', {'id': id, 'token': token})) }}">Changer le mot de passe</a> 
-            </div> 
-        </div>
+                <h1>Votre annonce chez Proxi'Car</h1>
+                <p>Bonjour {{ name }}, votre annonce "{{ annTitre }}" a été désactivée automatiquement au bout de 30 jours.</p>
+                <p>Elle n'est plus affichée sur notre site. Si votre véhicule est toujours à vendre, vous pouvez renouveler votre annonce sur votre <a href="{{ absolute_url(path('gestion_annonces')) }}"> panneau de gestion des annonces</a>. Vous pouvez également la supprimer définitivement de votre espace.</p>
+                <p>Egalement, nous tenons à vous rappeler que notre système supprime automatiquement les annonces supérieures à 60 jours, sauf si vous renouveler votre annonce.</p>
+                <p>Notre équipe se tient à votre disposition par email si besoin et vous répond dans les meilleurs délais.</p>
+                <p>Cordialement </br> L'équipe Proxi'Car</p>     
+            </div>
+        </div>     
     </body>
 </html>
