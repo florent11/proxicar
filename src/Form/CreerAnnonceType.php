@@ -6,6 +6,7 @@ use App\Entity\Annonces;
 use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -96,6 +97,19 @@ class CreerAnnonceType extends AbstractType
                         'message' => 'Indiquez si la boite de vitesse est Manuelle ou Automatique.',
                     ]),
                 ]
+            ])
+            ->add('ann_prix', TextType::class, [
+                'label' => 'Prix',
+                'attr' => ['placeholder' => 'Prix de vente', 'class' => 'form-control'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir le prix de vente de votre véhicule.',
+                    ]),
+                ]
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Photos (8 photos maxi)'
             ])
             ->add('ann_contenu', CKEditorType::class, [
                 'label' => 'Texte de l\'annonce',
