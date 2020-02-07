@@ -204,4 +204,30 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
     }
+
+    /**
+     * Suppression du compte utilisateur
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
+     * @Route("/supprimer-compte", name="supprimer_compte")
+     */
+    public function deleteUserAccount(Request $request)
+    {
+        $user = $this->getUser();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->get('security.token_storage')->setToken(null);
+        $request->getSession()->invalidate();
+
+        $this->addFlash(
+            'success',
+            'Votre compte utilisateur est supprimé.'
+        );
+
+        return $this->redirectToRoute('home');
+    }
 }

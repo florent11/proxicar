@@ -18,6 +18,12 @@
                 </div>
             {% endfor %}
 
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
             {% if app.user %}
                 <div class="mb-3">
                     Bonjour {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
@@ -50,14 +56,19 @@
                     <a class="nav-link" href="{{ path('edit_user_password') }}">Changer mon mots de passe</a>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ path('annonces') }}">Supprimer mon compte</a>
+                    <a class="nav-link delete-account" href="javascript:void(0)" data-url="{{ path('supprimer_compte') }}" >Supprimer mon compte</a>
                 </li>
             </ul>
         </div>
+    </div>
+
+    <div id="dialog-confirm" title="Confirmez votre choix">
+        <p><span class="ui-icon ui-icon-alert"></span>L'ensemble des données de votre compte vont être supprimées. </br> Confirmez-vous la suppression ?</p>
     </div>
 </div>
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{asset('js/slide.js')}}"></script>
+    <script src="{{asset('js/userDialogConfirm.js')}}"></script>
 {% endblock %}

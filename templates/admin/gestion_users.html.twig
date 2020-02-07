@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion Des Utilisateurs{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ controller_name }}</h1>
+            {% for users in usersAccounts %}
+                <p>Id: {{ users.id }}</p>
+                <p>{{ users.name}}</p>
+                <p>Email: {{ users.email }}</p>
+                <p>Pseudo: {{ users.pseudo }}</p>
+                <p>{{ users.numtel }}</p>
+                
+                {% for role in users.roles %}
+                    <p>Rôle: {{ role }}</p>
+                {% endfor %}
+                <fieldset>
+                    <label for="checkbox-4">Administrateur ?</label>
+                    <input type="checkbox" name="checkbox-4" id="checkbox-4">
+                    <a href="#"> SET ROLE_ADMIN</a>
+                </fieldset>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

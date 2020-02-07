@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Annonces;
 use App\Form\CreerAnnonceType;
 use App\Form\ModifAnnonceType;
+use App\Repository\AnnoncesRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,9 +53,10 @@ class AnnonceController extends AbstractController
     public function displayAnnManager()
     {
         $userAnnonces = $this->getUser()->getAnnonces();
-        dd($userAnnonces);
+
         return $this->render('account/gestion_annonces.html.twig', [
-            'controller_name' => 'Gestion Des Annonces'
+            'controller_name' => 'Gestion Des Annonces',
+            'user_annonces' => $userAnnonces
         ]);
     }
 
@@ -122,5 +125,135 @@ class AnnonceController extends AbstractController
             'modifAnnonceForm' => $form->createView(),
         ]);
     }
-}
 
+    /**
+     * Suppression d'une annonce
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
+     * @Route("/supprimer-annonce/{id}", name="supprimer_annonce")
+     */
+    public function deleteAnnonce(Annonces $annonce)
+    {
+        //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on supprime l'annonce.
+        if ($this->getUser() == $annonce->getUsers()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($annonce);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre annonce est supprimée.'
+            );
+
+            return $this->redirectToRoute('user_panel');
+        }
+        else { //Si les Id comparés sont différents, on affiche un message d'erreur.
+            $this->addFlash(
+                'error',
+                'Erreur - L\'annonce que vous souhaitez supprimer appartient à un utilisateur du site.'
+            );
+
+            return $this->redirectToRoute('home');
+        }
+    }
+
+     /**
+     * Désactivation automatique des annonces au bout de 30 jours
+     * (Tâche CRON)
+     * 
+     * @Route("/auto-disable-annonces", name="auto_disabling_annonces")
+     * 
+     */
+    public function autoDisablingAnnonces(AnnoncesRepository $annoncesRepo, \Swift_Mailer $mailer)
+    {
+        $annonces = $annoncesRepo->findBy(['ann_active' => true]);
+
+        foreach($annonces as $annonce) { 
+            $annDateDiff = date_diff(new DateTime(), $annonce->getAnnDate());
+
+            if ($annDateDiff->format("%a") >= '30') {
+                $annonce->setAnnActive(false);
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($annonce);
+                $entityManager->flush(); 
+
+                //Envoi d'un email à l'utilisateur
+                $user = $annonce->getUsers(); // On récupère les infos de l'utilisateur de l'annonce
+
+                $message = (new \Swift_Message('Hello Email'))
+                ->setFrom('proxicar@florentvila.com')
+                ->setTo($user->getEmail())
+                ->setSubject('Désactivation automatique de votre annonce')
+                ->setBody(
+                    $this->renderView(
+                        'emails/annonce_auto_disable.html.twig',
+                        ['name' => $user->getName(), 'annTitre' => $annonce->getAnnTitre()]
+                    ),
+                    'text/html'
+                );
+                $mailer->send($message);
+            }
+        }
+        return new Response("Désactivation des annonces supérieures à 30 jours.");
+    }
+
+     /**
+     * Renouvellement d'une annonce
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
+     * @Route("/renouveler-annonce/{id}", name="renouveler_annonce")
+     * 
+     */
+    public function renewAnnonce(Annonces $annonce)
+    {
+        //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on renouvelle l'annonce.
+        if ($this->getUser()->getId() == $annonce->getUsers()->getId()) {
+            $annonce->setAnnActive(true);
+            $annonce->setAnnDate(new \DateTime('now'));
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre annonce est renouvelée.'
+            );
+
+            return $this->redirectToRoute('user_panel');
+        }
+        else { //Si les Id comparés sont différents, on affiche un message d'erreur.
+            $this->addFlash(
+                'error',
+                'Erreur - L\'annonce que vous souhaitez renouveler appartient à un utilisateur du site ou n\'existe pas.'
+            );
+
+            return $this->redirectToRoute('home');
+        }
+    }
+
+     /**
+     * Suppression automatique des annonces au bout de 60 jours
+     * (Tâche CRON)
+     * 
+     * @Route("/auto-delete-annonces", name="auto_deleting_annonces")
+     * 
+     */
+    public function autoDeletingAnnonces(AnnoncesRepository $annoncesRepo)
+    {
+        $annonces = $annoncesRepo->findBy(['ann_active'=>false]);
+        foreach($annonces as $annonce) { 
+            $annDateDiff = date_diff(new DateTime(), $annonce->getAnnDate());
+
+            if ($annDateDiff->format("%a") >= '60') {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($annonce);
+                $entityManager->flush(); 
+            }
+        }
+        return new Response("Suppression des annonces supérieures à 60 jours.");
+    }
+}
