@@ -1,3 +1,9 @@
+a:link, a:visited, a:hover, a:active 
+{ 
+    outline:none; 
+} 
+
+/* Panneau profil utilisateur */
 .retour
 {
 	background-color: #ebebeb;
@@ -36,11 +42,129 @@ li
     list-style-type: none;
 }
 
+.ui-icon-alert /* Boite de dialogue demandant la confirmation de suppression */
+{
+    float: left; 
+    margin: 12px 12px 20px 0;
+}
+
+/* Panneau de gestion des annonces */
+.annonce-active
+{
+    color: green;
+    font-weight: bold;
+}
+
+.annonce-inactive
+{
+    color: red;
+    font-weight: bold;
+}
+
+.voir-annonce, .renouveler-annonce
+{
+    color: #fff;
+    background-color: #008cba;
+    border-color: #0079a1;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 10px;
+}
+
+.voir-annonce:hover, .renouveler-annonce:hover
+{
+    color: #E0E0E0;
+    background-color: #006f94;
+    border-color: #006687;
+}
+
+.voir-annonce:link , .renouveler-annonce:link
+{
+    text-decoration: none;
+}
+
+.modifier-annonce 
+{
+    color: #fff;
+    background-color: #379914;
+    border-color: #0079a1;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 10px;
+}
+
+.modifier-annonce:hover 
+{
+    color: #E0E0E0;
+    background-color: #347309;
+    border-color: #006687;
+}
+
+.modifier-annonce:link 
+{
+    text-decoration: none;
+}
+
+.delete-annonce 
+{
+    color: #fff;
+    background-color :#e73131;
+    border-color: #0079a1;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 10px;
+}
+
+.delete-annonce:hover 
+{
+    color: #E0E0E0;
+    background-color: #bb1919;
+    border-color: #006687;
+}
+
+.delete-annonce:link 
+{
+    text-decoration: none;
+}
+
+/* Password Strenght Meter */
+label {
+    display: block;
+  }
+  input {
+    width: 300px;
+  }
+  .container {
+    margin-top: 30px;
+  }
+  @media (min-width: 600px) {
+    #main {
+      width: 60%;
+    }
+  }
+
+/* Formulaire Mot de passe oublié */
 .forgot-password
 {
     padding: 0.2rem 0.1rem;
 }
 
+/* Pied de page */
 footer 
 {
     position: absolute;
