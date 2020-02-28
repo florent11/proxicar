@@ -5,25 +5,65 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-12">
+          <a href="{{ path('admin_panel') }}" class="fas fa-angle-left retour"> Retour</a>
             <h1>{{ controller_name }}</h1>
-            {% for users in usersAccounts %}
-                <p>Id: {{ users.id }}</p>
-                <p>{{ users.name}}</p>
-                <p>Email: {{ users.email }}</p>
-                <p>Pseudo: {{ users.pseudo }}</p>
-                <p>{{ users.numtel }}</p>
-                
-                {% for role in users.roles %}
-                    <p>Rôle: {{ role }}</p>
-                {% endfor %}
-                <fieldset>
-                    <label for="checkbox-4">Administrateur ?</label>
-                    <input type="checkbox" name="checkbox-4" id="checkbox-4">
-                    <a href="#"> SET ROLE_ADMIN</a>
-                </fieldset>
-            {% endfor %}
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nom</th>
+                      <th>Email</th>
+                      <th>Pseudo</th>
+                      <th>Tel</th>
+                      <th>Rôle</th>
+                      <th>Options</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody>
+                  {% for users in usersAccounts %}
+                    <tr>
+                      <td>{{ users.id }}</td>
+                      <td>{{ users.name }}</td>
+                      <td>{{ users.email }}</td>
+                      <td>{{ users.pseudo }}</td>
+                      {% if users.numtel %}
+                        <td>{{ users.numtel }}</td>
+                      {% else %}
+                        <td>Aucun</td>
+                      {% endif %}
+                      <td>
+                        {% for role in users.roles %}
+                          {% if role == "ROLE_USER" %}
+                            Utilisateur
+                          {% elseif role == "ROLE_ADMIN" %}
+                            Administrateur
+                          {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td>
+                      <a class="modif-role-user" href="{{ path('change_role_user', {'id': users.id}) }}">Changer le rôle</a>
+                      <a class="delete-user delete-account" href="javascript:void(0)" data-url="{{ path('supprimer_compte_user', {'id': users.id}) }}">Supprimer</a>
+                      </td>
+                    </tr>
+                   {% endfor %}
+                  </tbody>
+                 </table>
+               </div>
+             </div>
+           </div>
+          </div>
         </div>
     </div>
+    <div id="dialog-confirm" title="Confirmez votre choix">
+        <p><span class="ui-icon ui-icon-alert"></span>L'utilisateur sélectionné va être supprimé. </br> Confirmez-vous la suppression ?</p>
+    </div>
 </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{asset('js/userDialogConfirm.js')}}"></script>
 {% endblock %}

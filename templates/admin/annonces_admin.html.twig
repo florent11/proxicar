@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des annonces des utilisateurs{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <a href="{{ path('admin_panel') }}" class="fas fa-angle-left retour"> Retour</a>
+            <h1>{{ controller_name }}</h1>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                 <thead>
+                    <tr>
+                      <th>Date de publication</th>
+                      <th>Titre</th>
+                      <th>ID annonce</th>
+                      <th>Prix de vente</th>
+                      <th>Utilisateur (id)</th>
+                      <th>Statut</th>
+                      <th>Options</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody>
+                  {% for annonces in allAnnonces|sort %}
+                    <tr>
+                      <td>{{ annonces.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }}</td>
+                      <td>{{ annonces.anntitre }}</td>
+                      <td>{{ annonces.id }}</td>
+                      <td>{{ annonces.annprix }} €</td>
+                      <td>{{ annonces.users.name }} ({{ annonces.users.id }})</td> 
+                      {% if annonces.annavalider == true %}
+                        <td class="annonce-wait-validation">
+                            <i class="fas fa-ellipsis-h"></i>
+                            En attente de validation
+                        </td>
+                      {% elseif annonces.annsignaler == true %}
+                        <td class="annonce-wait-moderation">
+                              <i class="fas fa-ellipsis-h"></i>
+                              En attente de modération
+                          </td>
+                      {% elseif annonces.annactive == true %}
+                        <td class="annonce-active">
+                            <i class="fas fa-check-circle"></i>
+                            Active
+                        </td>
+                      {% else %}
+                        <td class="annonce-inactive">
+                            <i class="fas fa-times-circle"></i>
+                            Désactivée
+                        </td> 
+                      {% endif %}
+                      
+                      {% if annonces.annavalider == true %}
+                        <td>
+                          <a class="voir-annonce" href="{{ path('annonce', {'slug': annonces.slug}) }}">Voir l'annonce</a> 
+                          <a class="valider-annonce" href="{{ path('valid_annonce_user', {'id': annonces.id}) }}">Valider</a>
+                          <a class="delete-annonce" href="javascript:void(0)" data-url="{{ path('delete_annonce_admin', {'id': annonces.id}) }}">Supprimer</a>
+                        </td>
+                      {% elseif annonces.annsignaler == true %}
+                        <td>
+                          <a class="voir-annonce" href="{{ path('annonce', {'slug': annonces.slug}) }}">Voir l'annonce</a> 
+                          <a class="moderer-annonce" href="{{ path('moderer_annonce_user', {'id': annonces.id}) }}">Modérer</a>
+                          <a class="delete-annonce" href="javascript:void(0)" data-url="{{ path('delete_annonce_admin', {'id': annonces.id}) }}">Supprimer</a>
+                        </td>
+                      {% elseif annonces.annactive == true %}
+                        <td>
+                          <a class="voir-annonce" href="{{ path('annonce', {'slug': annonces.slug}) }}">Voir l'annonce</a> 
+                          <a class="delete-annonce" href="javascript:void(0)" data-url="{{ path('delete_annonce_admin', {'id': annonces.id}) }}">Supprimer</a>
+                        </td>
+                      {% else %}
+                        <td>
+                          <a class="voir-annonce" href="{{ path('annonce', {'slug': annonces.slug}) }}">Voir l'annonce</a> 
+                          <a class="delete-annonce" href="javascript:void(0)" data-url="{{ path('delete_annonce_admin', {'id': annonces.id}) }}">Supprimer définitivement</a>
+                        </td>
+                      {% endif %}
+                    </tr>
+                   {% endfor %}
+                  </tbody>
+                </table>
+               </div>
+             </div>
+           </div>
+          </div>
+        </div>
+    </div>
+    <div id="dialog-confirm" title="Confirmez votre choix">
+        <p><span class="ui-icon ui-icon-alert"></span>L'annonce sélectionnée va être supprimée définitivement. </br> Confirmez-vous la suppression ?</p>
+    </div>
+   </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{asset('js/annDialogDelete.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du rôle de l'utilisateur{% endblock %}
+
+{% block body %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <a href="{{ path('gestion_users') }}" class="fas fa-angle-left retour"> Retour</a>
+                <h1>Modification du rôle de l'utilisateur</h1>
+    
+                {{ form_start(changeRoleUserForm) }}
+                    <div class="form-group">{{ form_row(changeRoleUserForm.roles) }}</div> 
+    
+                    <button class="btn btn-lg btn-primary" type="submit">Enregistrer les modifications</button>
+                {{ form_end(changeRoleUserForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
