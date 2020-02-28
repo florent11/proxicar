@@ -4,6 +4,7 @@ class AnnDialogDelete
   {
     $("#dialog-confirm").hide();
     $(".delete-annonce").click(function(){
+        let that = this
         $("#dialog-confirm").dialog({
             resizable: false,
             height: "auto",
@@ -11,7 +12,7 @@ class AnnDialogDelete
             modal: true,
             buttons: {
                 "Oui": function() {
-                    $(location).attr('href', $(".delete-annonce").data('url'));
+                    $(location).attr('href', $(that).data('url'));
                     $(this).dialog("close");
                 },
                 Non: function() {

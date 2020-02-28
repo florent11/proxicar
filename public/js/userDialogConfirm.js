@@ -4,6 +4,7 @@ class userDialogConfirm
   {
     $("#dialog-confirm").hide();
     $(".delete-account").click(function(){
+        let that = this
         $("#dialog-confirm").dialog({
             resizable: false,
             height: "auto",
@@ -11,7 +12,7 @@ class userDialogConfirm
             modal: true,
             buttons: {
                 "Oui": function() {
-                  $(location).attr('href', $(".delete-account").data('url'));
+                  $(location).attr('href', $(that).data('url'));
                   $(this).dialog("close");
                 },
                 Non: function() {
