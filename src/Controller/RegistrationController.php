@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
+use DateTimeZone;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,46 +25,58 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
+            $botVerif = $form->get('accept_form')->getData();
+            if (empty($botVerif)) {
+                // encode the plain password
+                $user->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+
+                $user->setRgpdDate(new \DateTime('now', new DateTimeZone('Europe/Paris')));
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                $this->addFlash(
+                    'notice',
+                    'Votre compte a été créé avec succès !'
+                );
+
+                // do anything else you need here, like send an email
+                $message = (new \Swift_Message('Hello Email'))
+                ->setFrom('proxicar@florentvila.com')
+                ->setTo($user->getEmail())
+                ->setSubject('Confirmation d\'inscription - Proxi\'Car')
+                ->setBody(
+                    $this->renderView(
+                        // templates/emails/registration.html.twig
+                        'emails/registration_confirm.html.twig',
+                        ['name' => $user->getName(), 'email' => $user->getEmail()]
+                    ),
+                    'text/html'
+                );
+                $mailer->send($message);
+                
+                return $this->redirectToRoute('home');
+
+                return $guardHandler->authenticateUserAndHandleSuccess(
                     $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            $this->addFlash(
-                'notice',
-                'Votre compte a été créé avec succès !'
-            );
-
-            // do anything else you need here, like send an email
-            $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('proxicar@florentvila.com')
-            ->setTo($user->getEmail())
-            ->setSubject('Confirmation d\'inscription - Proxi\'Car')
-            ->setBody(
-                $this->renderView(
-                    // templates/emails/registration.html.twig
-                    'emails/registration_confirm.html.twig',
-                    ['name' => $user->getName(), 'email' => $user->getEmail()]
-                ),
-                'text/html'
-            );
-            $mailer->send($message);
-            
-            return $this->redirectToRoute('home');
-
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main' // firewall name in security.yaml
-            );
+                    $request,
+                    $authenticator,
+                    'main' // firewall name in security.yaml
+                );
+            }
+            else {
+                $this->addFlash(
+                'error',
+                'Erreur - Votre compte n\'a pas pu être créé.'
+                );
+                return $this->redirectToRoute('home');
+            }
         }
 
         return $this->render('registration/register.html.twig', [
