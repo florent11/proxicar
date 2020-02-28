@@ -109,7 +109,7 @@ class ModifAnnonceType extends AbstractType
                 ]
             ])
             ->add('imageFile', VichImageType::class, [
-                'label' => 'Photos (8 photos maxi)'
+                'label' => 'Photos (8 photos maxi)',
             ])
             ->add('ann_contenu', CKEditorType::class, [
                 'label' => 'Texte de l\'annonce',
