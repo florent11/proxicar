@@ -62,6 +62,16 @@ class Users implements UserInterface
      */
     private $token;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $rgpd_cochee;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $rgpd_date;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -220,6 +230,30 @@ class Users implements UserInterface
     public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getRgpdCochee(): ?bool
+    {
+        return $this->rgpd_cochee;
+    }
+
+    public function setRgpdCochee(bool $rgpd_cochee): self
+    {
+        $this->rgpd_cochee = $rgpd_cochee;
+
+        return $this;
+    }
+
+    public function getRgpdDate(): ?\DateTimeInterface
+    {
+        return $this->rgpd_date;
+    }
+
+    public function setRgpdDate(\DateTimeInterface $rgpd_date): self
+    {
+        $this->rgpd_date = $rgpd_date;
 
         return $this;
     }

@@ -18,6 +18,12 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('accept_form', TextType::class, [
+                'label' => 'accept_form',
+                'attr' => ['class' => 'no-bot-box'
+                ],
+                'required' => false
+            ])
             ->add('name', TextType::class, [
                 'label' => 'Nom complet',
                 'attr' => ['placeholder' => 'Nom/Prénom', 'class' => 'form-control'
@@ -52,7 +58,7 @@ class ContactType extends AbstractType
                 ]
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => 'Accepter les conditions de confidentialité',
+                'label' => 'J\'accepte que mes informations soient stockées dans la base de données de Proxi\'Car pour le traitement des contacts. J\'ai bien noté qu\'en aucun cas ces données ne seront cédées à des tiers.',
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devriez accepter nos conditions.',
