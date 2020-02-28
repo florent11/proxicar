@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
         <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
@@ -32,13 +33,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
                     </li>
-                    {% if is_granted('ROLE_USER') %}
+                    
+                    {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('user_panel') }}">Mon Compte</a>
                         </li>
-                    {% elseif is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('admin_panel') }}">Administration</a>
+                        </li>
+                    {% elseif is_granted('ROLE_USER') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('user_panel') }}">Mon Compte</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
@@ -54,26 +59,23 @@
         </nav>
         
         {% block body %}{% endblock %}
-        <div id="cookieConsent">
-            <div id="closeCookieConsent">x</div>
-            Ce site web utilise des cookies. 
-            <a href="javascript:void(0)" class="policy">Plus d'infos</a>
-            <a class="cookieConsentOK">OK</a>
-        </div>
-
+        
         <div id="dialog-policy" title="Politique de Confidentialité">
-            <p>Proxi'Car accorde une attention particulière à vos données personnelles, et s’engage de par ses conditions d’utilisation à ne transmettre, vendre ou céder à un tiers aucune information personnelle vous concernant.</p>
-            <p>Conformément à la loi « Informatique et Libertés » N° 78-17 du 6 Janvier 1978, vous bénéficiez d’un droit d’accès, de rectification et d’opposition. Pour l’exercer, merci de bien vouloir nous contacter par l’intermédiaire du formulaire de contact.</p>
-            <h2>Données personnelles</h2>
-            <p>Les informations recueillies sur ce site sont enregistrées dans un fichier informatisé par notre site internet pour la gestion du contenu du site et du compte utilisateur.</p>
+            <p>Les informations recueillies sur ce site sont enregistrées dans un fichier informatisé par Proxi'Car pour la gestion du contenu du site et du compte utilisateur.</p>
             <p>Elles sont conservées jusqu’à suppression du compte et sont destinées exclusivement à Proxi'Car.</p>
-            <p>Conformément à la loi « informatique et libertés », vous pouvez exercer votre droit d’accès aux données vous concernant et les faire rectifier en nous contactant via le formulaire de contact.</p>
+            <p>Conformément à la loi « informatique et libertés », vous pouvez exercer votre droit d’accès aux données vous concernant et les faire rectifier en contactant l'administrateur du site via le formulaire de contact mis à votre disposition.</p>
             <h2>Cookies</h2>
-            <p>Pour assurer le bon fonctionnement de ce site, nous devons parfois enregistrer de petits fichiers de données sur l’équipement de nos utilisateurs.</p>
+            <p>Pour assurer le bon fonctionnement de ce site, nous devons parfois enregistrer de petits fichiers de données sur l’équipement de nos utilisateurs. La plupart des grands sites web font de même.</p>
             <h3>Qu’est-ce qu’un cookie?</h3>
             <p>Un cookie est un petit fichier texte que les sites web sauvegardent sur votre ordinateur ou appareil mobile lorsque vous les consultez. Il permet à ces sites de mémoriser vos actions et préférences (nom d’utilisateur, langue, taille des caractères et autres paramètres d’affichage) pendant un temps donné, pour que vous n’ayez pas à indiquer ces informations à chaque fois vous consultez ces sites ou naviguez d’une page à une autre.</p>
             <h3>Comment utilisons-nous les cookies?</h3>
-            <p>Nous utilisons les cookies uniquement à des fins de statistiques pour connaître le comportement des visiteurs et optimiser leur expérience.</p>  
+            <p>Nous utilisons les cookies uniquement à des fins de statistiques pour connaître le comportement des visiteurs et optimiser leur expérience.</p>
+            <h3>Liste des cookies générés par ce site</h3>
+            <p><strong>PHPSESSID :</strong> Ce cookie technique, indispensable, sert à optimiser l'expérience des visiteurs.</p>
+            <p><strong>cookieconsent_status :</strong> Ce cookie, indispensable, sert à mémoriser votre choix concernant l’utilisation des cookies sur notre site. Ce cookie est valable 12 mois.</p>
+            <h3>Comment contrôler les cookies</h3>
+            <p>Vous pouvez contrôler et/ou supprimer des cookies comme vous le souhaitez. Pour en savoir plus, consultez aboutcookies.org. Vous avez la possibilité de supprimer tous les cookies déjà stockés sur votre ordinateur et de configurer la plupart des navigateurs pour qu’ils les bloquent. Toutefois, dans ce cas, vous devrez peut-être indiquer vous-mêmes certaines préférences chaque fois que vous vous rendrez sur un site, et certains services et fonctionnalités risquent de ne pas être accessibles.</p>
+            <p>Vous pouvez librement accepter ou refuser les cookies sur ce site. Pour les accepter, cliquez sur le bouton « Accepter » dans le bandeau en bas de l’écran (masqué si ils sont déjà acceptés). Pour modifier votre choix, utilisez l'onglet "Cookies" en bas à gauche de l'écran.</p>      
         </div>
         <footer>
             <p>Proxi'Car - Site fictif dans le cadre d'un projet de fin de formation</p>
@@ -89,6 +91,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>  
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+        <script src="{{asset('js/cookieConsentInit.js')}}"></script>   
         <script src="{{asset('js/policyDialog.js')}}"></script>   
     {% block javascripts %}{% endblock %}
     </body>
