@@ -27,23 +27,34 @@
                   </thead>
                   
                   <tbody>
-                  {% for userAnnonce in user_annonces %}
+                  {% for userAnnonce in user_annonces|sort %}
                     <tr>
                       <td>{{ userAnnonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }}</td>
                       <td>{{ userAnnonce.anntitre }}</td>
                       <td>{{ userAnnonce.annprix }} €</td>
-                      {% if userAnnonce.annactive == true %}
+                      {% if userAnnonce.annavalider == true %}
+                        <td class="annonce-wait-validation">
+                            <i class="fas fa-ellipsis-h"></i>
+                            En attente de validation
+                        </td>
+                      {% elseif userAnnonce.annsignaler == true %}
+                        <td class="annonce-wait-moderation">
+                            <i class="fas fa-ellipsis-h"></i>
+                            En attente de modération
+                      </td>
+                      {% elseif userAnnonce.annactive == true %}
                         <td class="annonce-active">
                             <i class="fas fa-check-circle"></i>
                             Active
-                        </td> 
+                        </td>
                       {% else %}
                         <td class="annonce-inactive">
                             <i class="fas fa-times-circle"></i>
                             Désactivée
                         </td> 
                       {% endif %}
-                      {% if userAnnonce.annactive == true %}
+
+                      {% if userAnnonce.annavalider == true or userAnnonce.annsignaler == true or userAnnonce.annactive == true %}
                       <td>
                         <a class="voir-annonce" href="{{ path('annonce', {'slug': userAnnonce.slug}) }}">Voir l'annonce</a> 
                         <a class="modifier-annonce" href="{{ path('modif_annonce', {'id': userAnnonce.id}) }}">Modifier</a> 

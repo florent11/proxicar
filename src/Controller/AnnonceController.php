@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use DateTime;
+use DateTimeZone;
 use App\Entity\Annonces;
 use App\Form\CreerAnnonceType;
 use App\Form\ModifAnnonceType;
 use App\Repository\AnnoncesRepository;
-use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +24,7 @@ class AnnonceController extends AbstractController
     public function listAnnonces()
     {
         $annonces = $this->getDoctrine()->getRepository(Annonces::class)->findAll();
-        //dd($annonces);
+
         return $this->render('annonce/index.html.twig', [
             'annonces' => $annonces
         ]);
@@ -37,10 +38,78 @@ class AnnonceController extends AbstractController
     public function displayAnnonce($slug)
     {
         $annonce = $this->getDoctrine()->getRepository(Annonces::class)->findOneBy(['slug' => $slug]);
-        //dd($annonce);
-        return $this->render('annonce/annonce_article.html.twig', [
+
+        //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on affiche l'annonce uniquement pour lui. L'admin du site peut aussi voir l'annonce.
+        if ($this->getUser() == $annonce->getUsers() || $this->getUser()->getRoles(['ROLE_ADMIN'])) {
+            return $this->render('annonce/annonce_article.html.twig', [
+                'annonce' => $annonce
+            ]);
+        } 
+
+        //Affichage quand aucun utilisateur n'est connecté (affichage public).
+        if ($annonce->getAnnAValider(true)) {
+            $this->addFlash(
+                'error',
+                'Annonce en attente de validation par l\'administrateur.'
+            );
+
+            return $this->redirectToRoute('home'); 
+        }
+        else if ($annonce->getAnnSignaler(true)) {
+            $this->addFlash(
+                'error',
+                'Annonce en attente de modération par l\'administrateur.'
+            );
+
+            return $this->redirectToRoute('home'); 
+        }
+        /*else if ($annonce->getAnnActive(false)) {
+            $this->addFlash(
+                'error',
+                'Annonce désactivée.'
+            );
+
+            return $this->redirectToRoute('home');
+        }*/
+        else {
+            return $this->render('annonce/annonce_article.html.twig', [
             'annonce' => $annonce
-        ]);
+            ]);  
+        }
+    }
+
+    /**
+     * Signaler une annonce
+     * 
+     * @Route("/signaler-annonce/{id}", name="signaler_annonce")
+     */
+    public function signalerAnnonce($id)
+    {
+        $annonce = $this->getDoctrine()->getRepository(Annonces::class)->find($id);
+
+        if ($annonce->getAnnSignaler(true)) {
+            $this->addFlash(
+                'error',
+                'L\'annonce a déjà été signalée à l\'administrateur.'
+            );
+
+            return $this->redirectToRoute('home'); 
+        }
+        else {
+            $annonce->setAnnSignaler(true);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'L\'annonce est signalée à l\'administrateur.
+                Par sécurité, celle-ci n\'est plus affichée jusqu\'à sa modération.'
+            );
+
+            return $this->redirectToRoute('home'); 
+        } 
     }
 
     /**
@@ -75,7 +144,7 @@ class AnnonceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $annonce->setAnnDate(new \DateTime('now'));
+            $annonce->setAnnDate(new \DateTime('now', new DateTimeZone('Europe/Paris')));
             $annonce->setUsers($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -119,7 +188,7 @@ class AnnonceController extends AbstractController
                 'Les modifications ont été enregistrées avec succès !'
             );
 
-            return $this->redirectToRoute('user_panel');
+            return $this->redirectToRoute('gestion_annonces');
         }
         return $this->render('annonce/modif_annonce.html.twig', [
             'modifAnnonceForm' => $form->createView(),
@@ -146,7 +215,7 @@ class AnnonceController extends AbstractController
                 'Votre annonce est supprimée.'
             );
 
-            return $this->redirectToRoute('user_panel');
+            return $this->redirectToRoute('gestion_annonces');
         }
         else { //Si les Id comparés sont différents, on affiche un message d'erreur.
             $this->addFlash(
@@ -212,8 +281,8 @@ class AnnonceController extends AbstractController
         //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on renouvelle l'annonce.
         if ($this->getUser()->getId() == $annonce->getUsers()->getId()) {
             $annonce->setAnnActive(true);
-            $annonce->setAnnDate(new \DateTime('now'));
-
+            $annonce->setAnnDate(new \DateTime('now', new DateTimeZone('Europe/Paris')));
+            
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($annonce);
             $entityManager->flush();

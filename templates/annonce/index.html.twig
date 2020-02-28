@@ -7,12 +7,14 @@
 <div class="container">
     <h1>Les Annonces Proxi'Car</h1>
 
-    {% for annonce in annonces %}
-        <p> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'D MMMM Y') }} </p> 
-        <p> Par {{ annonce.users.pseudo }} </p>
-        <p> {{ annonce.anntitre }} </p>
-        <p> {{ annonce.anncontenu|raw }} </p>
-        <p> {{ annonce.annprix }} Euros </p>
+    {% for annonce in annonces|sort %}
+        {% if annonce.annavalider == false and annonce.annsignaler == false and annonce.annactive == true %}
+            <p> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }} </p> 
+            <p> Par {{ annonce.users.pseudo }} </p>
+            <p> {{ annonce.anntitre }} </p>
+            <p> {{ annonce.anncontenu|raw }} </p>
+            <p> {{ annonce.annprix }} Euros </p>
+        {% endif %}
     {% endfor %}
 </div>
 

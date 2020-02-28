@@ -95,7 +95,7 @@ class Annonces
     /**
      * @ORM\Column(type="boolean")
      */
-    private $ann_active = true;
+    private $ann_active = false;
 
     /**
      * @ORM\Column(type="integer")
