@@ -1,7 +1,132 @@
 a:link, a:visited, a:hover, a:active 
 { 
     outline:none; 
-} 
+}
+
+.signaler-annonce 
+{
+    color: #fff;
+    background-color :#e73131;
+    border-color: #0079a1;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 10px;
+}
+
+.signaler-annonce:hover 
+{
+    color: #E0E0E0;
+    background-color: #bb1919;
+    border-color: #006687;
+}
+
+.signaler-annonce:link 
+{
+    text-decoration: none;
+}
+
+/* Messages flash */
+.alert
+{
+    font-weight: bold;
+}
+/* Messages flash */
+
+/* Formulaire de contact */
+.no-bot-box  /* Captcha invisible */
+{
+    display: none;
+}
+/* Fin formulaire de contact
+
+/* Panneau d'administration */
+/* Gestion des utilisateur */
+.modif-role-user 
+{
+    color: #fff;
+    background-color: #008cba;
+    border-color: #0079a1;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 10px;
+}
+
+.modif-role-user:hover 
+{
+    color: #E0E0E0;
+    background-color: #006f94;
+    border-color: #006687;
+}
+
+.modif-role-user:link 
+{
+    text-decoration: none;
+}
+.delete-user 
+{
+    color: #fff;
+    background-color :#e73131;
+    border-color: #0079a1;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 10px;
+}
+
+.delete-user:hover 
+{
+    color: #E0E0E0;
+    background-color: #bb1919;
+    border-color: #006687;
+}
+
+.delete-user:link 
+{
+    text-decoration: none;
+}
+
+/* Gestion des annonces des utilisateurs */ 
+.valider-annonce, .moderer-annonce
+{
+    color: #fff;
+    background-color: #6f42c1;
+    border-color: #0079a1;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 10px;
+}
+
+.valider-annonce:hover, .moderer-annonce:hover 
+{
+    color: #E0E0E0;
+    background-color: #573596;
+    border-color: #006687;
+}
+
+.valider-annonce:link, .moderer-annonce:link
+{
+    text-decoration: none;
+}
+/* Fin panneau d'administration */
 
 /* Panneau profil utilisateur */
 .retour
@@ -48,6 +173,11 @@ li
     margin: 12px 12px 20px 0;
 }
 
+.invalid-feedback
+{
+    font-weight: bold;
+}
+
 /* Panneau de gestion des annonces */
 .annonce-active
 {
@@ -58,6 +188,18 @@ li
 .annonce-inactive
 {
     color: red;
+    font-weight: bold;
+}
+
+.annonce-wait-validation
+{
+    color: #6f42c1;
+    font-weight: bold;
+}
+
+.annonce-wait-moderation
+{
+    color: #6f42c1;
     font-weight: bold;
 }
 
@@ -141,22 +283,7 @@ li
 {
     text-decoration: none;
 }
-
-/* Password Strenght Meter */
-label {
-    display: block;
-  }
-  input {
-    width: 300px;
-  }
-  .container {
-    margin-top: 30px;
-  }
-  @media (min-width: 600px) {
-    #main {
-      width: 60%;
-    }
-  }
+/* Fin panneau profil utilisateur */
 
 /* Formulaire Mot de passe oublié */
 .forgot-password
