@@ -22,7 +22,7 @@ class ContactController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $contact = $form->getData();
-            if (empty($contact['accept_form'])) {
+            if (empty($contact['accept_form'])) {  // Si le champ 'anti-captcha' est vide, on envoie l'email'.
                 $this->addFlash(
                     'notice',
                     'Votre message a été envoyé.'
@@ -43,7 +43,7 @@ class ContactController extends AbstractController
                 );
                 $mailer->send($message);
             }
-            else {
+            else {  // Si le champ 'anti-captcha' est rempli, on n'envoie pas l'email'.
                 $this->addFlash(
                 'error',
                 'Votre message n\'a pas été envoyé.'
