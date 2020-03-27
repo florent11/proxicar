@@ -23,5 +23,7 @@ class AnnDialogDelete
     });  
   }  
 }
-const confirmAnnRequest = new AnnDialogDelete;
-confirmAnnRequest.deleteRequest();
+$(function(){
+    const confirmAnnRequest = new AnnDialogDelete;
+    confirmAnnRequest.deleteRequest();
+})

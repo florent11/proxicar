@@ -23,5 +23,7 @@ class userDialogConfirm
     });  
   }  
 }
-const confirmRequest = new userDialogConfirm;
-confirmRequest.deleteRequest()
+$(function(){
+  const confirmRequest = new userDialogConfirm;
+  confirmRequest.deleteRequest()
+})
