@@ -26,7 +26,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $botVerif = $form->get('accept_form')->getData();
-            if (empty($botVerif)) {
+            if (empty($botVerif)) {  // Si le champ 'anti-captcha' est vide, on crée le compte utilisateur.
                 // encode the plain password
                 $user->setPassword(
                     $passwordEncoder->encodePassword(
@@ -70,7 +70,7 @@ class RegistrationController extends AbstractController
                     'main' // firewall name in security.yaml
                 );
             }
-            else {
+            else {  // Si le champ 'anti-captcha' est rempli, on ne crée pas le compte utilisateur.
                 $this->addFlash(
                 'error',
                 'Erreur - Votre compte n\'a pas pu être créé.'
