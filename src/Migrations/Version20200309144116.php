@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191121171310 extends AbstractMigration
+final class Version20200309144116 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,7 @@ final class Version20191121171310 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE users DROP user_admin');
+        $this->addSql('ALTER TABLE images DROP ann_titre, DROP ann_id');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +30,6 @@ final class Version20191121171310 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE users ADD user_admin TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE images ADD ann_titre VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, ADD ann_id INT NOT NULL');
     }
 }

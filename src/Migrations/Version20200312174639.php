@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200131183244 extends AbstractMigration
+final class Version20200312174639 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,8 @@ final class Version20200131183244 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE annonces DROP ann_supprimee');
+        $this->addSql('CREATE TABLE images (id INT AUTO_INCREMENT NOT NULL, ann_id_id INT NOT NULL, image_name VARCHAR(255) NOT NULL, INDEX IDX_E01FBE6AF747D710 (ann_id_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6AF747D710 FOREIGN KEY (ann_id_id) REFERENCES annonces (id)');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +31,6 @@ final class Version20200131183244 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE annonces ADD ann_supprimee TINYINT(1) NOT NULL');
+        $this->addSql('DROP TABLE images');
     }
 }

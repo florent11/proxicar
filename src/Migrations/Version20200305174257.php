@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191014182525 extends AbstractMigration
+final class Version20200305174257 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,8 +22,8 @@ final class Version20191014182525 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE logs ADD ann_deleted TINYINT(1) NOT NULL, ADD ann_moderated TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE users ADD pseudo VARCHAR(50) NOT NULL, ADD num_tel INT NOT NULL, ADD user_admin TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE annonces DROP featured_image');
+        $this->addSql('ALTER TABLE users CHANGE rgpd_cochee rgpd_cochee TINYINT(1) NOT NULL, CHANGE rgpd_date rgpd_date DATETIME NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -31,7 +31,7 @@ final class Version20191014182525 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE logs DROP ann_deleted, DROP ann_moderated');
-        $this->addSql('ALTER TABLE users DROP pseudo, DROP num_tel, DROP user_admin');
+        $this->addSql('ALTER TABLE annonces ADD featured_image VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('ALTER TABLE users CHANGE rgpd_cochee rgpd_cochee TINYINT(1) DEFAULT \'0\' NOT NULL, CHANGE rgpd_date rgpd_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL');
     }
 }
