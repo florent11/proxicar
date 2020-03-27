@@ -2,21 +2,25 @@
 
 {% block title %}Gestion Des Utilisateurs{% endblock %}
 
+{% block stylesheets %}
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.css">
+{% endblock %}
+
 {% block body %}
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
           <a href="{{ path('admin_panel') }}" class="fas fa-angle-left retour"> Retour</a>
             <h1>{{ controller_name }}</h1>
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-toggle="table" id="table" data-search="true" data-show-columns="true" data-show-multi-sort="true" data-click-to-select="true">
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>Nom</th>
-                      <th>Email</th>
-                      <th>Pseudo</th>
-                      <th>Tel</th>
+                      <th data-field="id" data-sortable="true" data-filter-control="select">ID</th>
+                      <th data-field="nom" data-sortable="true" data-filter-control="select">Nom</th>
+                      <th data-field="email" data-sortable="true" data-filter-control="select">Email</th>
+                      <th data-field="pseudo" data-sortable="true" data-filter-control="select">Pseudo</th>
+                      <th data-field="tel" data-sortable="true" data-filter-control="select">Tel</th>
                       <th>Rôle</th>
                       <th>Options</th>
                     </tr>
@@ -65,5 +69,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{asset('js/userDialogConfirm.js')}}"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/locale/bootstrap-table-fr-FR.js"></script>
+  <script src="{{asset('js/userDialogConfirm.js')}}"></script>
 {% endblock %}
