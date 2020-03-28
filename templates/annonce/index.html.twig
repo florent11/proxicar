@@ -11,13 +11,12 @@
         {% if annonce.annavalider == false and annonce.annsignaler == false and annonce.annactive == true %}
             <p> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }} </p> 
             <p> Par {{ annonce.users.pseudo }} </p>
-            <p> {{ annonce.anntitre }} </p>
+            <p><a class="link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p>
             <p> {{ annonce.anncontenu|raw }} </p>
             <p> {{ annonce.annprix }} Euros </p>
             <p> Région: {{ annonce.region }} </p>
             <p> Département: {{ annonce.departement }} </p>
-            <p> Ville: {{ annonce.ville }} </p>
-            
+            <p> Ville: {{ annonce.ville }} </p> 
         {% endif %}
     {% endfor %}
     {{ knp_pagination_render(annonces) }}
