@@ -14,8 +14,13 @@
             <p> {{ annonce.anntitre }} </p>
             <p> {{ annonce.anncontenu|raw }} </p>
             <p> {{ annonce.annprix }} Euros </p>
+            <p> Région: {{ annonce.region }} </p>
+            <p> Département: {{ annonce.departement }} </p>
+            <p> Ville: {{ annonce.ville }} </p>
+            
         {% endif %}
     {% endfor %}
+    {{ knp_pagination_render(annonces) }}
 </div>
 
 {% endblock %}

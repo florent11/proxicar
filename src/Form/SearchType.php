@@ -2,73 +2,66 @@
 
 namespace App\Form;
 
-use App\Entity\Annonces;
 use Symfony\Component\Form\AbstractType;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class ModifAnnonceType extends AbstractType
+class SearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ann_titre', TextType::class, [
+            ->add('mots_cles', TextType::class, [
                 'label' => 'Titre de l\'annonce',
-                'attr' => ['placeholder' => 'Titre', 'class' => 'form-control'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez écrire un titre pour votre annonce.',
-                    ]),
+                'required' => false,
+                'attr' => ['placeholder' => 'Rechercher un titre', 'class' => 'form-control'
                 ]
             ])
-            ->add('marque', TextType::class, [
-                'label' => 'Marque',
-                'attr' => ['placeholder' => 'Marque du véhicule', 'class' => 'form-control'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez écrire la marque de votre véhicule.',
-                    ]),
+            ->add('prix_min', TextType::class, [
+                'label' => 'Prix minimum',
+                'required' => false,
+                'attr' => ['placeholder' => 'Saisir un prix minimum', 'class' => 'form-control'
                 ]
             ])
-            ->add('modele', TextType::class, [
-                'label' => 'Modèle',
-                'attr' => ['placeholder' => 'Modèle du véhicule', 'class' => 'form-control'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez écrire le modèle de votre véhicule.',
-                    ]),
+            ->add('prix_max', TextType::class, [
+                'label' => 'Prix maximum',
+                'required' => false,
+                'attr' => ['placeholder' => 'Saisir un prix maximum', 'class' => 'form-control'
                 ]
             ])
-            ->add('annee_modele', TextType::class, [
-                'label' => 'Année-Modèle',
-                'attr' => ['placeholder' => 'Année du véhicule', 'class' => 'form-control'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Indiquez l\'Année de votre véhicule.',
-                    ]),
+            ->add('km_min', TextType::class, [
+                'label' => 'Kilomètre minimum',
+                'required' => false,
+                'attr' => ['placeholder' => 'Saisir un kilométrage minimum', 'class' => 'form-control'
                 ]
             ])
-            ->add('kilometre', TextType::class, [
-                'label' => 'Kilométrage',
-                'attr' => ['placeholder' => 'Kilométrage du véhicule', 'class' => 'form-control'
+            ->add('km_max', TextType::class, [
+                'label' => 'Kilomètre maximum',
+                'required' => false,
+                'attr' => ['placeholder' => 'Saisir un kilométrage maximum', 'class' => 'form-control'
+                ]
+            ])
+            ->add('annee', TextType::class, [
+                'label' => 'Année',
+                'required' => false,
+                'attr' => ['placeholder' => 'Saisir une année', 'class' => 'form-control'
+                ]
+            ])
+            ->add('boite_de_vitesse', ChoiceType::class, [ 
+                'required' => false,
+                'attr' => ['class' => 'form-control'
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir le kilométrage de votre véhicule.',
-                    ]),
+                'placeholder' => 'Sélectionner',
+                'choices' => [
+                    'Manuelle' => 'Manuelle',
+                    'Automatique'=> 'Automatique'
                 ]
             ])
             ->add('carburant', ChoiceType::class, [ 
+                'required' => false,
                 'attr' => ['class' => 'form-control'
                 ],
                 'placeholder' => 'Sélectionner',
@@ -78,48 +71,10 @@ class ModifAnnonceType extends AbstractType
                     'Electrique' => 'Electrique',
                     'Hybride' => 'Hybride',
                     'GPL' => 'GPL'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Indiquez le type d\'énergie de votre véhicule.',
-                    ]),
                 ]
             ])
-            ->add('boite_de_vitesse', ChoiceType::class, [ 
-                'attr' => ['class' => 'form-control'
-                ],
-                'placeholder' => 'Sélectionner',
-                'choices' => [
-                    'Manuelle' => 'Manuelle',
-                    'Automatique'=> 'Automatique'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Indiquez si la boite de vitesse est Manuelle ou Automatique.',
-                    ]),
-                ]
-            ])
-            ->add('ann_prix', TextType::class, [
-                'label' => 'Prix',
-                'attr' => ['placeholder' => 'Prix de vente', 'class' => 'form-control'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir le prix de vente de votre véhicule.',
-                    ]),
-                ]
-            ])
-            ->add('cv', TextType::class, [
-                'label' => 'Puissance fiscale',
-                'attr' => ['placeholder' => 'Puissance fiscale du véhicule', 'class' => 'form-control'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir la puissance fiscale de votre véhicule.',
-                    ]),
-                ]
-            ])
-            ->add('region', ChoiceType::class, [ 
+            ->add('region', ChoiceType::class, [
+                'required' => false,
                 'label' => 'Région',
                 'attr' => ['class' => 'form-control'
                 ],
@@ -139,14 +94,10 @@ class ModifAnnonceType extends AbstractType
                     'Pays de la Loire' => 'Pays de la Loire',
                     'Provence-Alpes-Côte d\'Azur' => 'Provence-Alpes-Côte d\'Azur',
                     'Outre-Mer' => 'Outre-Mer'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Indiquez votre région.',
-                    ]),
                 ]
             ])
-            ->add('departement', ChoiceType::class, [
+            ->add('departement', ChoiceType::class,[
+                'required' => false,
                 'label' => 'Département', 
                 'attr' => ['class' => 'form-control'
                 ],
@@ -253,37 +204,12 @@ class ModifAnnonceType extends AbstractType
                     'Guyane (973)' => 'Guyane (973)',
                     'La Réunion (974)' => 'La Réunion (974)',
                     'Mayotte (976)' => 'Mayotte (976)'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Indiquez votre département.',
-                    ]),
                 ]
             ])
             ->add('ville', TextType::class, [ 
+                'required' => false,
                 'label' => 'Ville',
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Votre ville'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Indiquez votre ville.',
-                    ]),
-                ]
-            ])
-            ->add('images', FileType::class, [
-                'label' => 'Photos (8 photos maxi)',
-                'multiple' => true,
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('ann_contenu', CKEditorType::class, [
-                'label' => 'Texte de l\'annonce',
-                'attr' => ['placeholder' => 'Texte de l\'annonce', 'class' => 'form-control editor'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez écrire un texte pour votre annonce.',
-                    ]),
                 ]
             ])
         ;
@@ -292,7 +218,7 @@ class ModifAnnonceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Annonces::class,
+            // Configure your form options here
         ]);
     }
 }

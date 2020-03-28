@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use DateTime;
 use DateTimeZone;
+use App\Entity\Images;
 use App\Entity\Annonces;
 use App\Form\CreerAnnonceType;
 use App\Form\ModifAnnonceType;
 use App\Repository\AnnoncesRepository;
+use Exception;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,9 +24,15 @@ class AnnonceController extends AbstractController
      * 
      * @Route("/annonces", name="annonces")
      */
-    public function listAnnonces()
+    public function listAnnonces(Request $request, PaginatorInterface $paginator)
     {
-        $annonces = $this->getDoctrine()->getRepository(Annonces::class)->findAll();
+        $annonces_repo = $this->getDoctrine()->getRepository(Annonces::class)->findAll();
+
+        $annonces = $paginator->paginate(
+            $annonces_repo, // Requête contenant les données à paginer (ici nos annonces)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            3 // Nombre de résultats par page
+        );
 
         return $this->render('annonce/index.html.twig', [
             'annonces' => $annonces
@@ -38,16 +47,18 @@ class AnnonceController extends AbstractController
     public function displayAnnonce($slug)
     {
         $annonce = $this->getDoctrine()->getRepository(Annonces::class)->findOneBy(['slug' => $slug]);
+        $images = $annonce->getImages();
 
-        //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on affiche l'annonce uniquement pour lui. L'admin du site peut aussi voir l'annonce.
-        if ($this->getUser() == $annonce->getUsers() || $this->getUser()->getRoles(['ROLE_ADMIN'])) {
+       //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on affiche l'annonce uniquement pour lui. L'admin du site peut aussi voir l'annonce.
+        if ($this->isGranted('ROLE_USER') && $this->getUser() == $annonce->getUsers() || $this->isGranted('ROLE_ADMIN')) {
             return $this->render('annonce/annonce_article.html.twig', [
-                'annonce' => $annonce
+                'annonce' => $annonce,
+                'images' => $images
             ]);
-        } 
+        }
 
         //Affichage quand aucun utilisateur n'est connecté (affichage public).
-        if ($annonce->getAnnAValider(true)) {
+        if ($annonce->getAnnAValider()) {
             $this->addFlash(
                 'error',
                 'Annonce en attente de validation par l\'administrateur.'
@@ -55,7 +66,7 @@ class AnnonceController extends AbstractController
 
             return $this->redirectToRoute('home'); 
         }
-        else if ($annonce->getAnnSignaler(true)) {
+        else if ($annonce->getAnnSignaler()) {
             $this->addFlash(
                 'error',
                 'Annonce en attente de modération par l\'administrateur.'
@@ -63,14 +74,14 @@ class AnnonceController extends AbstractController
 
             return $this->redirectToRoute('home'); 
         }
-        /*else if ($annonce->getAnnActive(false)) {
+        else if (!$annonce->getAnnActive()) {
             $this->addFlash(
                 'error',
                 'Annonce désactivée.'
             );
 
             return $this->redirectToRoute('home');
-        }*/
+        }
         else {
             return $this->render('annonce/annonce_article.html.twig', [
             'annonce' => $annonce
@@ -147,19 +158,45 @@ class AnnonceController extends AbstractController
             $annonce->setAnnDate(new \DateTime('now', new DateTimeZone('Europe/Paris')));
             $annonce->setUsers($this->getUser());
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($annonce);
-            $entityManager->flush();
+            $images = $form->get('images')->getData();
+            
+            if (count($images) < 8) {
+                foreach ($images as $image) {
+                    $fichier = md5(uniqid()).'.'.$image->guessExtension();
+                    $image->move($this->getParameter('images_annonce'), $fichier);
 
-            $this->addFlash(
-                'notice',
-                'L\'annonce a été soumise au modérateur pour validation.'
-            );
+                    $img = new Images;
+                    $img->setImageName($fichier);
+                    $annonce->addImage($img);
+                }
 
-            return $this->redirectToRoute('user_panel');
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($annonce);
+                $entityManager->flush();
+
+                $this->addFlash(
+                    'notice',
+                    'L\'annonce a été soumise au modérateur pour validation.'
+                );
+                
+                return $this->redirectToRoute('user_panel');
+            }
+            else {
+                $formData = $form->getData();
+
+                $this->addFlash(
+                    'error',
+                    'Vous avez chargé plus de 8 photos. 8 photos maximum autorisées.'
+                );
+
+                return $this->render('annonce/creer_annonce.html.twig', [
+                    'creerAnnonceForm' => $form->createView(),
+                    $formData
+                ]);
+            }  
         }
         return $this->render('annonce/creer_annonce.html.twig', [
-            'creerAnnonceForm' => $form->createView(),
+            'creerAnnonceForm' => $form->createView()
         ]);
     }
 
@@ -173,11 +210,35 @@ class AnnonceController extends AbstractController
     public function modifAnnonce(Request $request, $id)
     {
         $annonce = $this->getDoctrine()->getRepository(Annonces::class)->find($id);
-
+                
         $form = $this->createForm(ModifAnnonceType::class, $annonce);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $annonce->setAnnSignaler(false);
+            $annonce->setAnnModeree(false);
+
+            // Supression des anciennes images en stockage Disque Dur et en Base de Donnée
+            $imagesOldDb = $this->getDoctrine()->getRepository(Annonces::class)->find($id);
+            foreach ($imagesOld as $imageOld) {
+                $fichier = md5(uniqid()).'.'.$image->guessExtension();
+                $imageOld->remove($this->getParameter('images_annonce'), $fichier);
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($imagesRepo);
+            $entityManager->flush();
+
+            //Ajout des nouvelles images
+            $images = $form->get('images')->getData();
+            foreach ($images as $image) {
+                $fichier = md5(uniqid()).'.'.$image->guessExtension();
+                $image->move($this->getParameter('images_annonce'), $fichier);
+
+                $img = new Images;
+                $img->setImageName($fichier);
+                $annonce->addImage($img);
+            }
             
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($annonce);

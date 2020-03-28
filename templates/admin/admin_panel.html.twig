@@ -15,7 +15,63 @@
             <h1>{{ controller_name }}</h1>
 
             <a class="" href="{{ path('gestion_users') }}">Gestion des utilisateurs</a>
-            <a class="" href="{{ path('annonces_admin') }}">Gestion des annonces des utilisateurs</a>  
+            <a class="" href="{{ path('annonces_admin') }}">Gestion des annonces des utilisateurs</a>
+            
+            {% if usersTotal == 0 %}
+                <p>Aucun utilisateurs inscrits</p>
+            {% elseif usersTotal == 1 %}
+                <p>1 utilisateur inscrit</p>
+            {% else %}
+                <p>{{ usersTotal }} utilisateurs inscrits</p> 
+            {% endif %}
+
+            {% if annoncesTotal == 0 %}
+                <p>Aucune annonces publiées</p>
+            {% elseif annoncesTotal == 1 %}
+                <p>1 annonce publiée</p>
+            {% else %}
+                <p>{{ annoncesTotal }} annonces publiées</p> 
+            {% endif %}
+
+            {% if annoncesActives == 0 %}
+                <p>Aucune annonces actives</p>
+            {% elseif annoncesActives == 1 %}
+                <p>1 annonce active</p>
+            {% else %}
+                <p>{{ annoncesActives }} annonces actives</p> 
+            {% endif %}
+
+            {% if annoncesDesactivees == 0 %}
+                <p>Aucune annonces désactivées</p>
+            {% elseif annoncesDesactivees == 1 %}
+                <p>1 annonce désactivée</p>
+            {% else %}
+                <p>{{ annoncesDesactivees }} annonces désactivées</p> 
+            {% endif %}
+
+            {% if annoncesAValider == 0 %}
+                <p>Aucune annonces à valider</p>
+            {% elseif annoncesAValider == 1 %}
+                <p>1 annonce à valider</p>
+            {% else %}
+                <p>{{ annoncesAValider }} annonces à valider</p> 
+            {% endif %}
+
+            {% if annoncesAModerer == 0 %}
+                <p>Aucune annonces à modérer</p>
+            {% elseif annoncesAModerer == 1 %}
+                <p>1 annonce à modérer</p>
+            {% else %}
+                <p>{{ annoncesAModerer }} annonces à modérer</p> 
+            {% endif %}
+
+            {% if annoncesModerees == 0 %}
+                <p>Aucune annonces modérées par l'administrateur</p>
+            {% elseif annoncesModerees == 1 %}
+                <p>1 annonce modérée par l'administrateur</p>
+            {% else %}
+                <p>{{ annoncesModerees }} annonces modérées par l'administrateur</p> 
+            {% endif %}
         </div>
     </div>
 </div>

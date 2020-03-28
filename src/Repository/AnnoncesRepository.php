@@ -19,6 +19,137 @@ class AnnoncesRepository extends ServiceEntityRepository
         parent::__construct($registry, Annonces::class);
     }
 
+    public function searchAnnonces($resultSearchData)
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        if ($resultSearchData['mots_cles']) {
+            $queryBuilder
+            ->andWhere('a.ann_titre like :annTitre')
+            ->setParameter('annTitre', '%'.$resultSearchData['mots_cles'].'%')
+            ;
+        }
+        if ($resultSearchData['prix_min']) {
+            $queryBuilder
+            ->andWhere('a.ann_prix >= :annPrixMin')
+            ->setParameter('annPrixMin', $resultSearchData['prix_min'])
+            ;
+        } 
+        if ($resultSearchData['prix_max']) {
+            $queryBuilder
+            ->andWhere('a.ann_prix <= :annPrixMax')
+            ->setParameter('annPrixMax', $resultSearchData['prix_max']) 
+            ;
+        }
+        if ($resultSearchData['km_min']) {
+            $queryBuilder
+            ->andWhere('a.kilometre >= :kilometreMin')
+            ->setParameter('kilometreMin', $resultSearchData['km_min'])
+            ;
+        }
+        if ($resultSearchData['km_max']) {
+            $queryBuilder
+            ->andWhere('a.kilometre <= :kilometreMax')
+            ->setParameter('kilometreMax', $resultSearchData['km_max'])
+            ;
+        }
+        if ($resultSearchData['annee']) {
+            $queryBuilder
+            ->andWhere('a.annee_modele like :anneeModele')
+            ->setParameter('anneeModele', $resultSearchData['annee'])
+            ;
+        }
+        if ($resultSearchData['boite_de_vitesse']) {
+            $queryBuilder
+            ->andWhere('a.boite_de_vitesse like :boiteDeVitesse')
+            ->setParameter('boiteDeVitesse', $resultSearchData['boite_de_vitesse'])
+            ;
+        }
+        if ($resultSearchData['carburant']) {
+            $queryBuilder
+            ->andWhere('a.carburant like :carburant')
+            ->setParameter('carburant', $resultSearchData['carburant'])
+            ;
+        }
+        if ($resultSearchData['region']) {
+            $queryBuilder
+            ->andWhere('a.region like :region')
+            ->setParameter('region', $resultSearchData['region'])
+            ;
+        }
+        if ($resultSearchData['departement']) {
+            $queryBuilder
+            ->andWhere('a.departement like :departement')
+            ->setParameter('departement', $resultSearchData['departement'])
+            ;
+        }
+        if ($resultSearchData['ville']) {
+            $queryBuilder
+            ->andWhere('a.ville like :ville')
+            ->setParameter('ville', $resultSearchData['ville'])
+            ;
+        }
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function countAnnoncesNumber()
+    {
+        return $this->createQueryBuilder('a')
+        ->select('COUNT(a)')
+        ->getQuery()
+        ->getSingleScalarResult();
+        ;  
+    }
+
+    public function countAnnoncesActives()
+    {
+        return $this->createQueryBuilder('a')
+        ->select('COUNT(a)')
+        ->where('a.ann_active = 1')
+        ->getQuery()
+        ->getSingleScalarResult();
+        ;  
+    }
+
+    public function countAnnoncesDesactivees()
+    {
+        return $this->createQueryBuilder('a')
+        ->select('COUNT(a)')
+        ->where('a.ann_active = 0')
+        ->getQuery()
+        ->getSingleScalarResult();
+        ;  
+    }
+
+    public function countAnnoncesAValider()
+    {
+        return $this->createQueryBuilder('a')
+        ->select('COUNT(a)')
+        ->where('a.ann_a_valider = 1')
+        ->getQuery()
+        ->getSingleScalarResult();
+        ;  
+    }
+
+    public function countAnnoncesAModerer()
+    {
+        return $this->createQueryBuilder('a')
+        ->select('COUNT(a)')
+        ->where('a.ann_signaler = 1')
+        ->getQuery()
+        ->getSingleScalarResult();
+        ;  
+    }
+
+    public function countAnnoncesModerees()
+    {
+        return $this->createQueryBuilder('a')
+        ->select('COUNT(a)')
+        ->where('a.ann_moderee = 1')
+        ->getQuery()
+        ->getSingleScalarResult();
+        ;  
+    }
+
     // /**
     //  * @return Annonces[] Returns an array of Annonces objects
     //  */

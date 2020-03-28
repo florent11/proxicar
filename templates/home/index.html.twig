@@ -23,8 +23,46 @@
                 {{ message }}
             </div>
         {% endfor %}
+    
+    <h1>Rechercher une annonce</h1>
+        {{ form_start(searchForm) }} 
+            <div class="form-group">{{ form_row(searchForm.mots_cles) }}</div>
+            <div class="form-group">{{ form_row(searchForm.prix_min) }}</div>
+            <div class="form-group">{{ form_row(searchForm.prix_max) }}</div>
+            <div class="form-group">{{ form_row(searchForm.km_min) }}</div>
+            <div class="form-group">{{ form_row(searchForm.km_max) }}</div>
+            <div class="form-group">{{ form_row(searchForm.annee) }}</div>
+            <div class="form-group">{{ form_row(searchForm.boite_de_vitesse) }}</div>
+            <div class="form-group">{{ form_row(searchForm.carburant) }}</div>
+            <div class="form-group">{{ form_row(searchForm.region) }}</div>
+            <div class="form-group">{{ form_row(searchForm.departement) }}</div>
+            <div class="form-group">{{ form_row(searchForm.ville) }}</div>
+            
+            <button class="btn btn-lg btn-primary" type="submit">Rechercher</button>
+        {{ form_end(searchForm) }}
+    
+    {% if app.request.method == 'POST' %}
+        <div>
+            {% if searchResult |length == 0 %}
+                <p>Aucun résultat pour votre recherche.</p>
+            {% else %}
+                <h1>Résultat de la recherche</h1>
+                {% for annonce in searchResult %}
+                    {# A FAIRE : Mettre un lien vers l'annonce trouvée #}
+                    <p> {{ annonce.anntitre }} </p>
+                    <p> {{ annonce.kilometre }} KM </p>
+                    <p> Prix: {{ annonce.annprix }} Euros </p>
+                    <p> Année: {{ annonce.anneemodele }} </p>
+                    <p> Boîte de vitesse: {{ annonce.boitedevitesse }} </p>
+                    <p> Energie: {{ annonce.carburant }} </p>
+                    <p> Région: {{ annonce.region }} | Département: {{ annonce.departement }} | {{ annonce.ville }} </p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
 
-        <h1>Dernières Annonces</h1>
+    <h1>Dernières Annonces</h1>
+    {# A FAIRE : Mettre un lien vers l'annonce trouvée #}
         {% for annonce in annonces %}
             {% if annonce.annavalider == false and annonce.annsignaler == false and annonce.annactive == true %}
                 <p> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }} </p> 

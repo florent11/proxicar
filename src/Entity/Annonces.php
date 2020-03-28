@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Entity;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnnoncesRepository")
- * @Vich\Uploadable
  */
 class Annonces
 {
@@ -103,16 +101,34 @@ class Annonces
     private $ann_prix;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
+     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="ann_id", orphanRemoval=true, cascade={"persist"})
      */
-    private $featured_image;
+    private $images;
 
     /**
-     * @Vich\UploadableField(mapping="featured_images", fileNameProperty="featured_image")
-     * @var File
+     * @ORM\Column(type="integer")
      */
-    private $imageFile;
+    private $cv;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $region;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $departement;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ville;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     public function getSlug()
     {
@@ -304,28 +320,81 @@ class Annonces
         return $this;
     }
 
-    public function setImageFile(File $image = null)
+    /**
+     * @return Collection|Images[]
+     */
+    public function getImages(): Collection
     {
-        $this->imageFile = $image;
+        return $this->images;
+    }
 
-        if ($image) {
-            $this->updated_at = new \DateTime('now');
+    public function addImage(Images $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setAnnId($this);
         }
+
+        return $this;
     }
 
-    public function getImageFile()
+    public function removeImage(Images $image): self
     {
-        return $this->imageFile;
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+            // set the owning side to null (unless already changed)
+            if ($image->getAnnId() === $this) {
+                $image->setAnnId(null);
+            }
+        }
+
+        return $this;
     }
 
-    public function getFeaturedImage()
+    public function getCv(): ?int
     {
-        return $this->featured_image;
+        return $this->cv;
     }
 
-    public function setFeaturedImage($featured_image)
+    public function setCv(int $cv): self
     {
-        $this->featured_image = $featured_image;
+        $this->cv = $cv;
+
+        return $this;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(string $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getDepartement(): ?string
+    {
+        return $this->departement;
+    }
+
+    public function setDepartement(string $departement): self
+    {
+        $this->departement = $departement;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }
