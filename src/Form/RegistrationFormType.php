@@ -77,6 +77,10 @@ class RegistrationFormType extends AbstractType
             ))
             ->add('rgpd_cochee', CheckboxType::class, [
                 'label' => 'En m\'inscrivant à ce site, j\'accepte le stockage de mes données personnelles sans limite de durée jusqu\'à désinscription volontaire. Ces données sont destinées au traitement de l\'inscription et ne seront pas transmises à des tiers.',
+                'label_attr' => ['class' => 'custom-control-label'
+                ],
+                'attr' => ['class' => 'custom-control-input'
+                ],
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devriez accepter nos conditions.',

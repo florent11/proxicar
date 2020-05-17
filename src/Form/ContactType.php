@@ -59,6 +59,10 @@ class ContactType extends AbstractType
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'J\'accepte que mes informations soient stockées dans la base de données de Proxi\'Car pour le traitement des contacts. J\'ai bien noté qu\'en aucun cas ces données ne seront cédées à des tiers.',
+                'label_attr' => ['class' => 'custom-control-label'
+                ],
+                'attr' => ['class' => 'custom-control-input'
+                ],
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devriez accepter nos conditions.',

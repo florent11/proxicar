@@ -2,32 +2,71 @@
 
 {% block title %}Modification de l'annonce{% endblock %}
 
+{% block stylesheets %} 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+{% endblock %}
+
 {% block body %}
-<div class="container">
+    <div class="container modif-annonce-container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <a href="{{ path('gestion_annonces') }}" class="fas fa-angle-left retour"> Retour</a>
-                <h1>Modification de l'annonce</h1>
-    
+                <h1 class="text-center">Modification de l'annonce</h1>
+                <hr>
                 {{ form_start(modifAnnonceForm) }}
                     <div class="form-group">{{ form_row(modifAnnonceForm.ann_titre) }}</div>
                     <div class="form-group">{{ form_row(modifAnnonceForm.marque) }}</div>
                     <div class="form-group">{{ form_row(modifAnnonceForm.modele) }}</div> 
                     <div class="form-group">{{ form_row(modifAnnonceForm.annee_modele) }}</div>
-                    <div class="form-group">{{ form_row(modifAnnonceForm.kilometre) }}</div>
+                    <div class="form-group">
+                        {{ form_label(modifAnnonceForm.kilometre) }}
+                        <div class="input-group">
+                            {{ form_widget(modifAnnonceForm.kilometre) }}
+                            <div class="input-group-append">
+                                <span class="input-group-text">KM</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">{{ form_row(modifAnnonceForm.carburant) }}</div>
                     <div class="form-group">{{ form_row(modifAnnonceForm.boite_de_vitesse) }}</div>
-                    <div class="form-group">{{ form_row(modifAnnonceForm.ann_prix) }}</div>
-                    <div class="form-group">{{ form_row(modifAnnonceForm.cv) }}</div>
+                    <div class="form-group">
+                        {{ form_label(modifAnnonceForm.ann_prix) }}
+                        <div class="input-group">
+                            {{ form_widget(modifAnnonceForm.ann_prix) }}
+                            <div class="input-group-append">
+                                <span class="input-group-text">€</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(modifAnnonceForm.cv) }}
+                        <div class="input-group">
+                            {{ form_widget(modifAnnonceForm.cv) }}
+                            <div class="input-group-append">
+                                <span class="input-group-text">CV</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">{{ form_row(modifAnnonceForm.region) }}</div>
                     <div class="form-group">{{ form_row(modifAnnonceForm.departement) }}</div>
                     <div class="form-group">{{ form_row(modifAnnonceForm.ville) }}</div>
-                    <div class="form-group">{{ form_row(modifAnnonceForm.images) }}</div>
+                    <div class="form-group images">{{ form_row(modifAnnonceForm.images) }}</div>
+                    {% for image in annonce.images %}
+                        <div class="form-group">
+                            <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="" src="{{ asset('uploads/images/featured/'~image.imageName)|imagine_filter('carre') }}" alt="Image"></a>
+                            <button class="btn btn-lg btn-danger delete-image mt-3 ml-3" data-url="{{ path('supprimer_image', {'id': image.id}) }}" type="submit">Supprimer</button>
+                        </div> 
+                    {% endfor %}
                     <div class="form-group">{{ form_row(modifAnnonceForm.ann_contenu) }}</div>
-
                     <button class="btn btn-lg btn-primary" type="submit">Enregistrer les modifications</button>
                 {{ form_end(modifAnnonceForm) }}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script src="{{asset('js/ajaxCallImages.js')}}"></script>
+    <script src="{{asset('js/jsUpload.js')}}"></script>
 {% endblock %}

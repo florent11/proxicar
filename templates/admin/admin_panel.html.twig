@@ -3,76 +3,93 @@
 {% block title %}Administration{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            {% if app.user %}
-                <div class="mb-3">
-                    Bonjour {{ app.user.name }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
-                </div>
-            {% endif %}
-
-            <h1>{{ controller_name }}</h1>
-
-            <a class="" href="{{ path('gestion_users') }}">Gestion des utilisateurs</a>
-            <a class="" href="{{ path('annonces_admin') }}">Gestion des annonces des utilisateurs</a>
-            
-            {% if usersTotal == 0 %}
-                <p>Aucun utilisateurs inscrits</p>
-            {% elseif usersTotal == 1 %}
-                <p>1 utilisateur inscrit</p>
-            {% else %}
-                <p>{{ usersTotal }} utilisateurs inscrits</p> 
-            {% endif %}
-
-            {% if annoncesTotal == 0 %}
-                <p>Aucune annonces publiées</p>
-            {% elseif annoncesTotal == 1 %}
-                <p>1 annonce publiée</p>
-            {% else %}
-                <p>{{ annoncesTotal }} annonces publiées</p> 
-            {% endif %}
-
-            {% if annoncesActives == 0 %}
-                <p>Aucune annonces actives</p>
-            {% elseif annoncesActives == 1 %}
-                <p>1 annonce active</p>
-            {% else %}
-                <p>{{ annoncesActives }} annonces actives</p> 
-            {% endif %}
-
-            {% if annoncesDesactivees == 0 %}
-                <p>Aucune annonces désactivées</p>
-            {% elseif annoncesDesactivees == 1 %}
-                <p>1 annonce désactivée</p>
-            {% else %}
-                <p>{{ annoncesDesactivees }} annonces désactivées</p> 
-            {% endif %}
-
-            {% if annoncesAValider == 0 %}
-                <p>Aucune annonces à valider</p>
-            {% elseif annoncesAValider == 1 %}
-                <p>1 annonce à valider</p>
-            {% else %}
-                <p>{{ annoncesAValider }} annonces à valider</p> 
-            {% endif %}
-
-            {% if annoncesAModerer == 0 %}
-                <p>Aucune annonces à modérer</p>
-            {% elseif annoncesAModerer == 1 %}
-                <p>1 annonce à modérer</p>
-            {% else %}
-                <p>{{ annoncesAModerer }} annonces à modérer</p> 
-            {% endif %}
-
-            {% if annoncesModerees == 0 %}
-                <p>Aucune annonces modérées par l'administrateur</p>
-            {% elseif annoncesModerees == 1 %}
-                <p>1 annonce modérée par l'administrateur</p>
-            {% else %}
-                <p>{{ annoncesModerees }} annonces modérées par l'administrateur</p> 
-            {% endif %}
+    <div class="container admin-panel-container">
+        <div class="row">
+            <div class="col-md-12 admin-title">
+                <h1 class="text-center">{{ controller_name }}</h1>
+                <hr>
+            </div>
+            <div class="col-md-6 text-center mt-4 icon-adminpanel-1">
+                <a href="{{ path('gestion_users') }}"><i class="fas fa-users"></i></a>
+                <h2><a href="{{ path('gestion_users') }}">Gestion des utilisateurs</a><h2>
+            </div>
+            <div class="col-md-6 text-center mt-4 icon-adminpanel-2">
+                <a class="" href="{{ path('annonces_admin') }}"><i class="fas fa-book-open"></i></a>
+                <h2><a class="" href="{{ path('annonces_admin') }}">Gestion des annonces des utilisateurs</a><h2>
+            </div>
         </div>
+        <div class="row text-center infos-adminpanel">
+            <div class="col-md-12 mt-5 mb-5">
+                <h1>Informations Générales</h1>
+                <hr>
+            </div>
+            <div class="col-md-4 text-center">
+                {% if usersTotal == 0 %}
+                    <p>Aucun utilisateurs inscrits</p>
+                {% elseif usersTotal == 1 %}
+                    <p>1 utilisateur inscrit</p>
+                {% else %}
+                    <p>{{ usersTotal }} utilisateurs inscrits</p> 
+                {% endif %}
+            </div>
+            <div class="col-md-4 text-center">
+                {% if annoncesTotal == 0 %}
+                    <p>Aucune annonces publiées</p>
+                {% elseif annoncesTotal == 1 %}
+                    <p>1 annonce publiée</p>
+                {% else %}
+                    <p>{{ annoncesTotal }} annonces publiées</p> 
+                {% endif %}
+            </div>
+            <div class="col-md-4 text-center">
+                {% if annoncesActives == 0 %}
+                    <p>Aucune annonces actives</p>
+                {% elseif annoncesActives == 1 %}
+                    <p>1 annonce active</p>
+                {% else %}
+                    <p>{{ annoncesActives }} annonces actives</p> 
+                {% endif %}
+            </div>
+        </div>
+        <div class="row infos-adminpanel">
+            <div class="col-md-4 text-center">
+                {% if annoncesDesactivees == 0 %}
+                    <p>Aucune annonces désactivées</p>
+                {% elseif annoncesDesactivees == 1 %}
+                    <p>1 annonce désactivée</p>
+                {% else %}
+                    <p>{{ annoncesDesactivees }} annonces désactivées</p> 
+                {% endif %}
+            </div>
+            <div class="col-md-4 text-center">
+                {% if annoncesAValider == 0 %}
+                    <p class="fas fa-check-circle ok-icon"> Aucune annonces à valider</p>
+                {% elseif annoncesAValider == 1 %}
+                    <p class="fas fa-exclamation-triangle warning-icon"> 1 annonce à valider</p>
+                {% else %}
+                    <p class="fas fa-exclamation-triangle warning-icon"> {{ annoncesAValider }} annonces à valider</p> 
+                {% endif %}
+            </div>
+            <div class="col-md-4 text-center">
+                {% if annoncesAModerer == 0 %}
+                    <p class="fas fa-check-circle ok-icon"> Aucune annonces à modérer</p>
+                {% elseif annoncesAModerer == 1 %}
+                    <p class="fas fa-exclamation-triangle warning-icon"> 1 annonce à modérer</p>
+                {% else %}
+                    <p class="fas fa-exclamation-triangle warning-icon"> {{ annoncesAModerer }} annonces à modérer</p> 
+                {% endif %}
+            </div>
+        </div>
+        <div class="row text-right infos-adminpanel mb-5">
+            <div class="col-md-12 col-10">
+                {% if annoncesModerees == 0 %}
+                    <p>Aucune annonces modérées par l'administrateur</p>
+                {% elseif annoncesModerees == 1 %}
+                    <p>1 annonce modérée par l'administrateur</p>
+                {% else %}
+                    <p>{{ annoncesModerees }} annonces modérées par l'administrateur</p> 
+                {% endif %}
+            </div>
+        </div> 
     </div>
-</div>
 {% endblock %}

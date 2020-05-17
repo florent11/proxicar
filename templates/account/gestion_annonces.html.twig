@@ -7,83 +7,81 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
+  <div class="container-fluid gestion-annonces-container">
     <div class="row">
-        <div class="col-12">
-            <a href="{{ path('user_panel') }}" class="fas fa-angle-left retour"> Retour</a>
-            <h1>{{ controller_name }}</h1>  
+      <div class="col-12">
+        <a href="{{ path('user_panel') }}" class="fas fa-angle-left retour"> Retour</a>
+        <h1 class="text-center">{{ controller_name }}</h1>
+        <hr>
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Vos annonces publiées</h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-toggle="table" id="table" data-search="true" data-show-columns="true" data-show-multi-sort="true" data-click-to-select="true" data-mobile-responsive="true" data-resizable="true" data-show-toggle="true">
+                <thead>
+                  <tr>
+                    <th data-field="date" data-sortable="true" data-filter-control="select">Date de publication</th>
+                    <th data-field="titre" data-sortable="true" data-filter-control="select">Titre</th>
+                    <th data-field="prix" data-sortable="true" data-filter-control="select">Prix de vente</th>
+                    <th data-field="statut" data-sortable="true" data-filter-control="select">Statut</th>
+                    <th>Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for userAnnonce in user_annonces|sort %}
+                  <tr>
+                    <td>{{ userAnnonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }}</td>
+                    <td>{{ userAnnonce.anntitre }}</td>
+                    <td>{{ userAnnonce.annprix }} €</td>
+                    {% if userAnnonce.annavalider == true %}
+                      <td class="annonce-wait-validation">
+                          <i class="fas fa-ellipsis-h"></i>
+                          En attente de validation
+                      </td>
+                    {% elseif userAnnonce.annsignaler == true %}
+                      <td class="annonce-wait-moderation">
+                        <i class="fas fa-ellipsis-h"></i>
+                        En attente de modération
+                      </td>
+                    {% elseif userAnnonce.annactive == true %}
+                      <td class="annonce-active">
+                          <i class="fas fa-check-circle"></i>
+                          Active
+                      </td>
+                    {% else %}
+                      <td class="annonce-inactive">
+                          <i class="fas fa-times-circle"></i>
+                          Désactivée
+                      </td> 
+                    {% endif %}
 
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Vos annonces publiées</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-toggle="table" id="table" data-search="true" data-show-columns="true" data-show-multi-sort="true" data-click-to-select="true">
-                  <thead>
-                    <tr>
-                      <th data-field="date" data-sortable="true" data-filter-control="select">Date de publication</th>
-                      <th data-field="titre" data-sortable="true" data-filter-control="select">Titre</th>
-                      <th data-field="prix" data-sortable="true" data-filter-control="select">Prix de vente</th>
-                      <th data-field="statut" data-sortable="true" data-filter-control="select">Statut</th>
-                      <th>Options</th>
-                    </tr>
-                  </thead>
-                  
-                  <tbody>
-                  {% for userAnnonce in user_annonces|sort %}
-                    <tr>
-                      <td>{{ userAnnonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }}</td>
-                      <td>{{ userAnnonce.anntitre }}</td>
-                      <td>{{ userAnnonce.annprix }} €</td>
-                      {% if userAnnonce.annavalider == true %}
-                        <td class="annonce-wait-validation">
-                            <i class="fas fa-ellipsis-h"></i>
-                            En attente de validation
-                        </td>
-                      {% elseif userAnnonce.annsignaler == true %}
-                        <td class="annonce-wait-moderation">
-                            <i class="fas fa-ellipsis-h"></i>
-                            En attente de modération
-                      </td>
-                      {% elseif userAnnonce.annactive == true %}
-                        <td class="annonce-active">
-                            <i class="fas fa-check-circle"></i>
-                            Active
-                        </td>
-                      {% else %}
-                        <td class="annonce-inactive">
-                            <i class="fas fa-times-circle"></i>
-                            Désactivée
-                        </td> 
-                      {% endif %}
-
-                      {% if userAnnonce.annavalider == true or userAnnonce.annsignaler == true or userAnnonce.annactive == true %}
-                      <td>
-                        <a class="voir-annonce" href="{{ path('annonce', {'slug': userAnnonce.slug}) }}">Voir l'annonce</a> 
-                        <a class="modifier-annonce" href="{{ path('modif_annonce', {'id': userAnnonce.id}) }}">Modifier</a> 
-                        <a class="delete-annonce" href="javascript:void(0)" data-url="{{ path('supprimer_annonce', {'id': userAnnonce.id}) }}">Supprimer</a>
-                      </td>
-                      {% else %}
-                      <td>
-                        <a class="renouveler-annonce" href="{{ path('renouveler_annonce', {'id': userAnnonce.id}) }}">Renouveler l'annonce</a>  
-                        <a class="delete-annonce" href="javascript:void(0)" data-url="{{ path('supprimer_annonce', {'id': userAnnonce.id}) }}">Supprimer définitivement</a>
-                      </td>
-                      {% endif %}
-                    </tr>
-                   {% endfor %}
-                  </tbody>
-                </table>
-              </div>
+                    {% if userAnnonce.annavalider == true or userAnnonce.annsignaler == true or userAnnonce.annactive == true %}
+                    <td class="options-links">
+                      <a class="voir-annonce" href="{{ path('annonce', {'slug': userAnnonce.slug}) }}">Voir</a> 
+                      <a class="modifier-annonce" href="{{ path('modif_annonce', {'id': userAnnonce.id}) }}">Modifier</a> 
+                      <a class="delete-annonce" href="javascript:void(0)" data-url="{{ path('supprimer_annonce', {'id': userAnnonce.id}) }}" data-toggle="modal" data-target="#confirmSupprAnnonce">Supprimer</a>
+                    </td>
+                    {% else %}
+                    <td class="options-links">
+                      <a class="renouveler-annonce" href="{{ path('renouveler_annonce', {'id': userAnnonce.id}) }}">Renouveler</a>  
+                      <a class="delete-annonce" href="javascript:void(0)" data-url="{{ path('supprimer_annonce', {'id': userAnnonce.id}) }}" data-toggle="modal" data-target="#confirmSupprAnnonce">Supprimer</a>
+                    </td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-
-        <div id="dialog-confirm" title="Confirmez votre choix">
+      </div>
+      <div id="dialog-confirm" title="Confirmez votre choix">
         <p><span class="ui-icon ui-icon-alert"></span>L'annonce sélectionnée va être supprimée définitivement. </br> Confirmez-vous la suppression ?</p>
-        </div>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
 
 {% block javascripts %}

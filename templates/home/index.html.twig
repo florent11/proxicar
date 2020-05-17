@@ -2,74 +2,138 @@
 
 {% block title %}Accueil - Proxi'Car{% endblock %}
 
-{% block body %}
+{% block stylesheets %} 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+{% endblock %}
 
-<div class="container">
-    <h1>{{ title_home }}</h1>
-        {% for message in app.flashes('notice') %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
+{% block body %}  
+    <header class="masthead text-center text-white background-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-left message-flash-home">
+                    {% for message in app.flashes('notice') %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
 
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-danger" role="alert">
-                {{ message }}
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        {% endfor %}
-    
-    <h1>Rechercher une annonce</h1>
-        {{ form_start(searchForm) }} 
-            <div class="form-group">{{ form_row(searchForm.mots_cles) }}</div>
-            <div class="form-group">{{ form_row(searchForm.prix_min) }}</div>
-            <div class="form-group">{{ form_row(searchForm.prix_max) }}</div>
-            <div class="form-group">{{ form_row(searchForm.km_min) }}</div>
-            <div class="form-group">{{ form_row(searchForm.km_max) }}</div>
-            <div class="form-group">{{ form_row(searchForm.annee) }}</div>
-            <div class="form-group">{{ form_row(searchForm.boite_de_vitesse) }}</div>
-            <div class="form-group">{{ form_row(searchForm.carburant) }}</div>
-            <div class="form-group">{{ form_row(searchForm.region) }}</div>
-            <div class="form-group">{{ form_row(searchForm.departement) }}</div>
-            <div class="form-group">{{ form_row(searchForm.ville) }}</div>
-            
-            <button class="btn btn-lg btn-primary" type="submit">Rechercher</button>
-        {{ form_end(searchForm) }}
-    
-    {% if app.request.method == 'POST' %}
-        <div>
-            {% if searchResult |length == 0 %}
-                <p>Aucun résultat pour votre recherche.</p>
-            {% else %}
-                <h1>Résultat de la recherche</h1>
-                {% for annonce in searchResult %}
-                    <p><a class="link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p> 
-                    <p> {{ annonce.kilometre }} KM </p>
-                    <p> Prix: {{ annonce.annprix }} Euros </p>
-                    <p> Année: {{ annonce.anneemodele }} </p>
-                    <p> Boîte de vitesse: {{ annonce.boitedevitesse }} </p>
-                    <p> Energie: {{ annonce.carburant }} </p>
-                    <p> Région: {{ annonce.region }} | Département: {{ annonce.departement }} | {{ annonce.ville }} </p>
-                {% endfor %}
-            {% endif %}
         </div>
-    {% endif %}
-
-    <h1>Dernières Annonces</h1>
+        <div class="container my-auto">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h1 class="text-uppercase welcome-title" data-aos="flip-left" data-aos-easing="ease-out-cubic"><strong data-aos-duration="3000">Bienvenue sur Proxi'Car</strong></h1>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-lg-8 mx-auto">
+                <p data-aos="zoom-out-right" data-aos-duration="3000" class="text-faded mb-5 welcome-description">Petites annonces pour la vente de véhicules d'occasions entre particuliers</p>
+            </div>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" role="button" href="#search-annonce">Rechercher des annonces</a></div>
+        </div>
+    </header>
+        
+    <section id="search-annonce">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <h1 class="text-center section-heading">Rechercher des annonces</h1>
+                    <hr>
+                    {{ form_start(searchForm, {'action': '#search-result'}) }} 
+                        <div class="form-group">{{ form_row(searchForm.mots_cles) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.prix_min) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.prix_max) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.km_min) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.km_max) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.annee) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.boite_de_vitesse) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.carburant) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.region) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.departement) }}</div>
+                        <div class="form-group">{{ form_row(searchForm.ville) }}</div>
+                        
+                        <button class="btn btn-lg btn-primary" type="submit">Rechercher</button>
+                    {{ form_end(searchForm) }}
+                
+                    {% if app.request.method == 'POST' %}
+                        <div class="pt-5" id="search-result">
+                            {% if searchResult |length == 0 %}
+                                <p>Aucun résultat pour votre recherche.</p>
+                            {% else %}
+                                <h1 class="text-center section-heading">Résultat de la recherche</h1>
+                                <hr>
+                                {% for annonce in searchResult %}
+                                    <div class="card mb-3 shadow">
+                                        <div class="row no-gutters">
+                                            {% for image in annonce.images %}
+                                                {% if loop.first %}
+                                                    <div class="col-md-4">
+                                                        <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="card-img-top w-100 d-block" src="{{ asset('uploads/images/featured/'~image.imageName) }}"></a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <p><a class="card-title link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p> 
+                                                    <p class="card-text">{{ annonce.kilometre }} KM</p>
+                                                    <p class="card-text">Prix: {{ annonce.annprix }} Euros</p>
+                                                    <p class="card-text">Année: {{ annonce.anneemodele }}</p>
+                                                    <p class="card-text">Boîte de vitesse: {{ annonce.boitedevitesse }}</p>
+                                                    <p class="card-text">Energie: {{ annonce.carburant }}</p>
+                                                    <p class="card-text">Région: {{ annonce.region }} | Département: {{ annonce.departement }} | {{ annonce.ville }}</p>
+                                                    <a class="voir-annonce" href="{{ path('annonce', {'slug': annonce.slug}) }}">Voir l'annonce</a> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="card-group pt-3 mb-5">
+        <div class="col-md-12 col-lg-12">
+            <h1 class="text-center section-heading">Dernières Annonces</h1>
+            <hr>
+        </div>
         {% for annonce in annonces %}
             {% if annonce.annavalider == false and annonce.annsignaler == false and annonce.annactive == true %}
-                <p> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }} </p> 
-                <p> Par {{ annonce.users.pseudo }} </p>
-                <p><a class="link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p>
-                <p> {{ annonce.anncontenu|raw }} </p>
-                <p> {{ annonce.annprix }} Euros </p>
+                <div class="col-md-4">
+                    <div class="card m-3 shadow">
+                        {% for image in annonce.images %}
+                            {% if loop.first %}
+                                <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="card-img-top w-100 d-block" src="{{ asset('uploads/images/featured/'~image.imageName) }}"></a>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="card-body">
+                            <p class="card-text text-center date-publication"> Publiée le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }}</p>
+                            <p><a class="card-title link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p>
+                            <p class="card-text"> Prix: {{ annonce.annprix }} Euros</p>
+                            <a class="voir-annonce" href="{{ path('annonce', {'slug': annonce.slug}) }}">Voir l'annonce</a> 
+                        </div>
+                    </div>
+                </div>
             {% endif %}
         {% endfor %}
-</div>
+    </section>
+{% endblock %}
 
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 {% endblock %}

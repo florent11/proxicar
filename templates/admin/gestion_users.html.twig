@@ -7,65 +7,61 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
+  <div class="container-fluid gestion-users-container">
     <div class="row">
-        <div class="col-12">
-          <a href="{{ path('admin_panel') }}" class="fas fa-angle-left retour"> Retour</a>
-            <h1>{{ controller_name }}</h1>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-toggle="table" id="table" data-search="true" data-show-columns="true" data-show-multi-sort="true" data-click-to-select="true">
-                  <thead>
-                    <tr>
-                      <th data-field="id" data-sortable="true" data-filter-control="select">ID</th>
-                      <th data-field="nom" data-sortable="true" data-filter-control="select">Nom</th>
-                      <th data-field="email" data-sortable="true" data-filter-control="select">Email</th>
-                      <th data-field="pseudo" data-sortable="true" data-filter-control="select">Pseudo</th>
-                      <th data-field="tel" data-sortable="true" data-filter-control="select">Tel</th>
-                      <th>Rôle</th>
-                      <th>Options</th>
-                    </tr>
-                  </thead>
-                  
-                  <tbody>
-                  {% for users in usersAccounts %}
-                    <tr>
-                      <td>{{ users.id }}</td>
-                      <td>{{ users.name }}</td>
-                      <td>{{ users.email }}</td>
-                      <td>{{ users.pseudo }}</td>
-                      {% if users.numtel %}
-                        <td>{{ users.numtel }}</td>
-                      {% else %}
-                        <td>Aucun</td>
+      <div class="col-12">
+        <a href="{{ path('admin_panel') }}" class="fas fa-angle-left retour"> Retour</a>
+        <h1 class="text-center">{{ controller_name }}</h1>
+        <hr>
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-toggle="table" id="table" data-search="true" data-show-columns="true" data-show-multi-sort="true" data-click-to-select="true" data-mobile-responsive="true" data-resizable="true" data-show-toggle="true">
+            <thead>
+              <tr>
+                <th data-field="id" data-sortable="true" data-filter-control="select">ID</th>
+                <th data-field="nom" data-sortable="true" data-filter-control="select">Nom</th>
+                <th data-field="email" data-sortable="true" data-filter-control="select">Email</th>
+                <th data-field="pseudo" data-sortable="true" data-filter-control="select">Pseudo</th>
+                <th data-field="tel" data-sortable="true" data-filter-control="select">Tel</th>
+                <th>Rôle</th>
+                <th>Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for users in usersAccounts %}
+                <tr>
+                  <td>{{ users.id }}</td>
+                  <td>{{ users.name }}</td>
+                  <td>{{ users.email }}</td>
+                  <td>{{ users.pseudo }}</td>
+                  {% if users.numtel %}
+                    <td>{{ users.numtel }}</td>
+                  {% else %}
+                    <td>Aucun</td>
+                  {% endif %}
+                  <td>
+                    {% for role in users.roles %}
+                      {% if role == "ROLE_USER" %}
+                        Utilisateur
+                      {% elseif role == "ROLE_ADMIN" %}
+                        Administrateur
                       {% endif %}
-                      <td>
-                        {% for role in users.roles %}
-                          {% if role == "ROLE_USER" %}
-                            Utilisateur
-                          {% elseif role == "ROLE_ADMIN" %}
-                            Administrateur
-                          {% endif %}
-                        {% endfor %}
-                      </td>
-                      <td>
-                      <a class="modif-role-user" href="{{ path('change_role_user', {'id': users.id}) }}">Changer le rôle</a>
-                      <a class="delete-user delete-account" href="javascript:void(0)" data-url="{{ path('supprimer_compte_user', {'id': users.id}) }}">Supprimer</a>
-                      </td>
-                    </tr>
-                   {% endfor %}
-                  </tbody>
-                 </table>
-               </div>
-             </div>
-           </div>
-          </div>
+                    {% endfor %}
+                  </td>
+                  <td class="options-links">
+                    <a class="modif-role-user" href="{{ path('change_role_user', {'id': users.id}) }}">Changer le rôle</a>
+                    <a class="delete-user delete-account" href="javascript:void(0)" data-url="{{ path('supprimer_compte_user', {'id': users.id}) }}">Supprimer</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>  
+        <div id="dialog-confirm" title="Confirmez votre choix">
+          <p><span class="ui-icon ui-icon-alert"></span>L'utilisateur sélectionné va être supprimé. </br> Confirmez-vous la suppression ?</p>
         </div>
+      </div>
     </div>
-    <div id="dialog-confirm" title="Confirmez votre choix">
-        <p><span class="ui-icon ui-icon-alert"></span>L'utilisateur sélectionné va être supprimé. </br> Confirmez-vous la suppression ?</p>
-    </div>
-</div>
-</div>
+  </div>
 {% endblock %}
 
 {% block javascripts %}
