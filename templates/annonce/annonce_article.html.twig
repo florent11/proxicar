@@ -2,75 +2,150 @@
 
 {% block title %}Annonce - Proxi'Car{% endblock %}
 
+{% block stylesheets %} 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="{{asset('css/flexslider/flexslider.css')}}">
+{% endblock %}
+
 {% block body %}
+    <div class="container annonce-article-container">
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
 
-<div class="container">
-    {% if annonce.annavalider == true %}
-        <div class="alert alert-info" role="alert">
-            Annonce en attente de validation par l'administrateur.
-        </div>
-    {% endif %}
-    {% if annonce.annsignaler == true %}
-        <div class="alert alert-danger" role="alert">
-            Annonce en attente de modération par l'administrateur.
-        </div>
-    {% endif %} 
-    {% if annonce.annactive == false %}
-        <div class="alert alert-warning" role="alert">
-            Annonce inactive.
-        </div>
-    {% endif %}
-    <h1>L'annonce</h1>
-        <p> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }} </p> 
-        <p> Par {{ annonce.users.pseudo }} </p>
-        <p> {{ annonce.anntitre }} </p>
-        <p> {{ annonce.anncontenu|raw }} </p>
-        <p> {{ annonce.annprix }} Euros </p>
-        <p> Année: {{ annonce.anneemodele }} </p> 
-        <p> Puissance fiscale: {{ annonce.cv }} CV </p>
-        <p> Carburant: {{ annonce.carburant }} </p>
-        <p> Boite de vitesse: {{ annonce.boitedevitesse }} </p>
-        <p> Région: {{ annonce.region }} </p>
-        <p> Département: {{ annonce.departement }} </p>
-        <p> Ville: {{ annonce.ville }} </p>
-        
-        {% if annonce.annsignaler == true %}
-            <p>
-                Annonce en attente de modération.
-            </p>
-        {% elseif annonce.annmoderee == true %}
-            Annonce modéréé par l'administrateur.
-        {% else %}
-            <a class="signaler-annonce" href="{{ path('signaler_annonce', {'id': annonce.id}) }}">Signaler un abus</a>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if annonce.annavalider == true %}
+            <div class="alert alert-info" role="alert">
+                Annonce en attente de validation par l'administrateur.
+            </div>
         {% endif %}
-        
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                {% for image in annonce.images %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}" class="{{ (loop.index == 1)?'active':'' }}"></li>     
-                {% endfor %}   
-            </ol>
-            
-            <div class="carousel-inner">  
-                {% for image in annonce.images %}
-                    <div class="carousel-item {{ (loop.index == 1)?'active':'' }}">
-                        <img class="d-block w-100" src="{{ asset('uploads/images/featured/'~image.imageName)|imagine_filter('article') }}" alt="Image"> 
-                    </div>
-                {% endfor %} 
-            </div>  
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+        {% if annonce.annsignaler == true %}
+            <div class="alert alert-danger" role="alert">
+                Annonce en attente de modération par l'administrateur.
+            </div>
+        {% endif %} 
+        {% if annonce.annactive == false %}
+            <div class="alert alert-warning" role="alert">
+                Annonce inactive.
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">{{ annonce.anntitre }}</h1>
+                <hr>
+            </div>
         </div>
-</div>
-
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-center pt-2"> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }} | Par: {{ annonce.users.pseudo }}</p>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div id="slider" class="flexslider">
+                    <ul class="slides">
+                        {% for image in annonce.images %}  
+                            <li>
+                                <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img src="{{ asset('uploads/images/featured/'~image.imageName)|imagine_filter('article') }}"></a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>   
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="carousel" class="flexslider">
+                    <ul class="slides">
+                        {% for image in annonce.images %}  
+                            <li>
+                                <img src="{{ asset('uploads/images/featured/'~image.imageName)|imagine_filter('img_slide') }}" />
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-right">
+                {% if annonce.annsignaler == true %} 
+                    <p>Annonce en attente de modération.</p>
+                {% elseif annonce.annmoderee == true %}
+                    Annonce modéréé par l'administrateur.
+                {% else %}
+                    <a class="signaler-annonce" href="{{ path('signaler_annonce', {'id': annonce.id}) }}">Signaler un abus</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row mt-5 text-center">
+            <div class="col-md-12">
+                <h1>Description</h1>
+                <hr>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <p>{{ annonce.anncontenu|raw }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <p>Prix: {{ annonce.annprix }} Euros</p>
+            </div>
+            <div class="col-md-2">
+                <p>Année: {{ annonce.anneemodele }}</p> 
+            </div>
+            <div class="col-md-3"> 
+                <p>Kilométrage: {{ annonce.kilometre }} KM</p>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <p>Puissance fiscale: {{ annonce.cv }} CV</p>
+                <p>Carburant: {{ annonce.carburant }}</p>
+                <p>Boite de vitesse: {{ annonce.boitedevitesse }}</p>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-5">
+                <p>Région: {{ annonce.region }}</p>
+            </div>
+            <div class="col-md-5">
+                <p>Département: {{ annonce.departement }}</p> 
+            </div>
+            <div class="col-md-2"> 
+                <p>Ville: {{ annonce.ville }}</p>
+            </div>
+        </div>
+        <div class="row my-5 text-center">
+            <div class="col-md-6 mb-3">
+                <a class="send-message" href="{{ path('contact_annonceur', {'slug': annonce.slug}) }}">Ecrire à l'annonceur</a>
+            </div>
+            {% if annonce.users.numtel %}
+                <div class="col-md-6">
+                    <a class="numtel-button" num-user="{{ annonce.users.numtel }}">Voir le N° de téléphone</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{asset('js/carouselCarAnn.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script src="{{asset('js/jquery.flexslider.js')}}"></script>
+    <script src="{{asset('js/carouselCarAnnInit.js')}}"></script>
+    <script src="{{asset('js/hideTelNum.js')}}"></script>
 {% endblock %}
