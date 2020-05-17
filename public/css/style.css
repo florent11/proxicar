@@ -1,6 +1,124 @@
-a:link, a:visited, a:hover, a:active 
-{ 
-    outline:none; 
+/* Body, Logo, NavBar, Footer */
+body, footer
+{
+    background-color: #f2f2f2;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link, #mainNav .navbar-nav > li.nav-item > a.nav-link:focus
+{
+    color: #183053;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus:hover, #mainNav .navbar-nav > li.nav-item > a.nav-link:hover 
+{
+	color: #00a3e5;
+}
+
+.logo
+{
+    height: 48px;
+}
+/*----------*/
+
+/* Accueil */
+.message-flash-home
+{
+    margin-top: 9rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width:992px) 
+{
+    .masthead
+    {
+        padding-top: 0 !important;
+    }
+}
+
+.background-header
+{
+    background-image: url("/img/img-home-modif.jpg");
+}
+
+.welcome-title, .welcome-description
+{
+    background: #373737d9;
+    border-radius: 800px;
+}
+
+header h1, .welcome-description
+{
+    padding: 1rem !important;
+}
+
+.card-img
+{
+    width: 18rem;
+}
+
+.date-publication
+{
+    font-style: italic;
+}
+
+footer li
+{
+    list-style: none;
+}
+/*----------*/
+
+/* Page des Annonces */
+.annonces-container
+{
+    margin-top: 107px;
+    margin-bottom: 185px;
+}
+/*----------*/
+
+/* Article Annonce */
+.annonce-article-container
+{
+    margin-top: 9rem;
+    margin-bottom: 14rem;
+}
+
+.annonce-article-container .alert
+{
+    margin-top: 8rem !important;
+    margin-bottom: 3rem !important;
+}
+
+.flex-direction-nav a:before
+{
+    font-size: 30px !important;
+}
+
+.send-message, .numtel-button
+{
+    cursor: pointer;
+    color: #fff !important;
+    background-color :#1d6add !important;
+    border-color: #0079a1;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 10px;
+}
+
+.send-message:hover, .numtel-button:hover
+{
+    color: #E0E0E0;
+    background-color: #055ada !important;
+    border-color: #006687;
+}
+
+.send-message:link, .numtel-button:link 
+{
+    text-decoration: none;
 }
 
 .signaler-annonce 
@@ -29,23 +147,747 @@ a:link, a:visited, a:hover, a:active
 {
     text-decoration: none;
 }
+/*----------*/
+
+/* Formulaire pour envoyer un message à l'annonceur */
+.contact-annonceur-background
+{
+    background-image: url('/img/img-contact-annonceur.jpg');
+    background-size: cover; 
+    background-attachment: fixed;
+}
+
+.contact-annonceur-container
+{
+    padding: 116px 0 190px 0;
+}
+
+.contact-annonceur-container .retour
+{
+    margin-left: 4rem;
+}
+
+.contact-annonceur-container form 
+{
+    max-width: 1123px;
+    width: 90%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    color: #505e6c;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+  
+@media (max-width:767px) 
+{
+    .contact-annonceur-container form 
+    {
+        padding: 30px;
+    }
+
+    .contact-annonceur-containerr
+    {
+        padding: 136px 0 182px 0;
+    }
+}
+
+@media (min-width:767px) and (max-width:992px)
+{
+    .contact-annonceur-container
+    {
+        padding: 116px 0 172px 0;
+    }
+}
+
+.contact-annonceur-container h1 
+{
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 36px;
+    color: inherit;
+}
+  
+.contact-annonceur-container .form-group:last-child 
+{
+    margin-bottom: 5px;
+}
+  
+.contact-annonceur-container form .form-control 
+{
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+    outline: none;
+    color: inherit;
+    padding-left: 12px;
+    height: 42px;
+}
+  
+.contact-annonceur-container form .form-control:focus 
+{
+    border: 1px solid #b2b2b2;
+}
+  
+.contact-annonceur-container form textarea .form-control 
+{
+    min-height: 100px;
+    max-height: 260px;
+    padding-top: 10px;
+    resize: vertical;
+}
+  
+.contact-annonceur-container form .btn 
+{
+    padding: 16px 32px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 0.9;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    line-height: 1;
+    outline: none !important;
+}
+  
+.contact-annonceur-container form .btn:hover 
+{
+    opacity: 1;
+}
+  
+.contact-annonceur-container form .btn:active 
+{
+    transform: translateY(1px);
+}
+  
+.contact-annonceur-container form .btn-primary 
+{
+    background-color: #055ada !important;
+    margin-top: 15px;
+    color: #fff;
+}
+/*----------*/
+
+/* Contact */
+.no-bot-box  /* Captcha invisible */
+{
+    display: none;
+}
+
+.contact-background
+{
+    background-image: url('/img/img-contact.jpg');
+    background-size: cover; 
+    background-attachment: fixed;
+}
+
+.contact-container
+{
+    padding: 116px 0 93px 0;
+}
+
+.contact-container form 
+{
+    max-width: 1123px;
+    width: 90%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    color: #505e6c;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+  
+@media (max-width:767px) 
+{
+    .contact-container form 
+    {
+        padding: 30px;
+    }
+
+    .contact-container
+    {
+        padding: 136px 0 182px 0;
+    }
+}
+
+@media (min-width:767px) and (max-width:992px)
+{
+    .contact-container
+    {
+        padding: 116px 0 172px 0;
+    }
+}
+
+  
+.contact-container h1 
+{
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 36px;
+    color: inherit;
+}
+  
+.contact-container .form-group:last-child 
+{
+    margin-bottom: 5px;
+}
+  
+.contact-container form .form-control 
+{
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+    outline: none;
+    color: inherit;
+    padding-left: 12px;
+    height: 42px;
+}
+  
+.contact-container form .form-control:focus 
+{
+    border: 1px solid #b2b2b2;
+}
+  
+.contact-container form textarea .form-control 
+{
+    min-height: 100px;
+    max-height: 260px;
+    padding-top: 10px;
+    resize: vertical;
+}
+  
+.contact-container form .btn 
+{
+    padding: 16px 32px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 0.9;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    line-height: 1;
+    outline: none !important;
+}
+  
+.contact-container form .btn:hover 
+{
+    opacity: 1;
+}
+  
+.contact-container form .btn:active 
+{
+    transform: translateY(1px);
+}
+  
+.contact-container form .btn-primary 
+{
+    background-color: #055ada !important;
+    margin-top: 15px;
+    color: #fff;
+}
+/*----------*/
+
+/* Inscription */
+.registration-background
+{
+    background-image: url('/img/img-inscription.jpg');
+    background-size: cover; 
+    background-attachment: fixed;
+}
+
+.registration-container
+{
+    
+    padding: 112px 0 94px 0;
+}
+.registration-container form 
+{
+    max-width: 1123px;
+    width: 90%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    color: #505e6c;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+  
+@media (max-width:767px) 
+{
+    .registration-container form 
+    {
+        padding: 30px;
+    }
+}
+
+@media (max-width:992px) 
+{
+    .registration-container
+    {
+        padding: 132px 0 193px 0;
+    }
+}
+  
+.registration-container h1 
+{
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 36px;
+    color: inherit;
+}
+  
+.registration-container .form-group:last-child 
+{
+    margin-bottom: 5px;
+}
+  
+.registration-container form .form-control 
+{
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+    outline: none;
+    color: inherit;
+    padding-left: 12px;
+    height: 42px;
+}
+  
+.registration-container form .form-control:focus 
+{
+    border: 1px solid #b2b2b2;
+}
+  
+.registration-container form textarea .form-control 
+{
+    min-height: 100px;
+    max-height: 260px;
+    padding-top: 10px;
+    resize: vertical;
+}
+  
+.registration-container form .btn 
+{
+    padding: 16px 32px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 0.9;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    line-height: 1;
+    outline: none !important;
+}
+  
+.registration-container form .btn:hover 
+{
+    opacity: 1;
+}
+  
+.registration-container form .btn:active 
+{
+    transform: translateY(1px);
+}
+  
+.registration-container form .btn-primary 
+{
+    background-color: #055ada !important;
+    margin-top: 15px;
+    color: #fff;
+}
+/*----------*/
+
+/* Connexion */
+.login-background
+{
+    background-image: url('/img/img-connexion.jpg');
+    background-size: cover; 
+    background-attachment: fixed;
+}
+
+.login-container
+{
+    padding: 148px 0 189px 0;
+}
+
+.login-container form 
+{
+    max-width: 1123px;
+    width: 45%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    color: #505e6c;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+@media (max-width:767px) 
+{
+    .login-container form 
+    {
+        padding: 30px;
+        width: 95%;
+    }
+}
+  
+.login-container h1 
+{
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 36px;
+    color: inherit;
+}
+  
+.login-container .form-group:last-child 
+{
+    margin-bottom: 5px;
+}
+  
+.login-container form .form-control 
+{
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+    outline: none;
+    color: inherit;
+    padding-left: 12px;
+    height: 42px;
+}
+  
+.login-container form .form-control:focus 
+{
+    border: 1px solid #b2b2b2;
+}
+  
+.login-container form textarea .form-control 
+{
+    min-height: 100px;
+    max-height: 260px;
+    padding-top: 10px;
+    resize: vertical;
+}
+  
+.login-container form .btn 
+{
+    padding: 16px 32px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 0.9;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    line-height: 1;
+    outline: none !important;
+}
+  
+.login-container form .btn:hover 
+{
+    opacity: 1;
+}
+  
+.login-container form .btn:active 
+{
+    transform: translateY(1px);
+}
+  
+.login-container form .btn-primary 
+{
+    background-color: #055ada !important;
+    margin-top: 15px;
+    color: #fff;
+}
+/*----------*/
+
+/* Mot de passe oublié */
+.forgot-password-background
+{
+    background-image: url('/img/img-connexion.jpg');
+    background-size: cover; 
+    background-attachment: fixed;
+}
+.forgot-password-container
+{
+    padding: 148px 0 225px 0;
+}
+
+.forgot-password-container form 
+{
+    max-width: 1123px;
+    width: 45%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    color: #505e6c;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+  
+@media (max-width:767px) 
+{
+    .forgot-password-container form 
+    {
+        padding: 30px;
+        width: 95%;
+    }
+}
+  
+.forgot-password-container h1
+{
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 36px;
+    color: inherit;
+}
+  
+.forgot-password-container .form-group:last-child 
+{
+    margin-bottom: 5px;
+}
+  
+.forgot-password-container form .form-control 
+{
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+    outline: none;
+    color: inherit;
+    padding-left: 12px;
+    height: 42px;
+}
+  
+.forgot-password-container form .form-control:focus 
+{
+    border: 1px solid #b2b2b2;
+}
+  
+.forgot-password-container form textarea .form-control 
+{
+    min-height: 100px;
+    max-height: 260px;
+    padding-top: 10px;
+    resize: vertical;
+}
+  
+.forgot-password-container form .btn 
+{
+    padding: 16px 32px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 0.9;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    line-height: 1;
+    outline: none !important;
+}
+  
+.forgot-password-container form .btn:hover 
+{
+    opacity: 1;
+}
+  
+.forgot-password-container form .btn:active 
+{
+    transform: translateY(1px);
+}
+  
+.forgot-password-container form .btn-primary 
+{
+    background-color: #055ada !important;
+    margin-top: 15px;
+    color: #fff;
+}
+/*----------*/
+
+/* Réinitialisation du Mot de passe */
+.reset-password-background
+{
+    background-image: url('/img/img-connexion.jpg');
+    background-size: cover; 
+    background-attachment: fixed;
+}
+
+.reset-password-container
+{
+    padding: 123px 0 182px 0;
+}
+
+.reset-password-container form 
+{
+    max-width: 1123px;
+    width: 45%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    color: #505e6c;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+  
+@media (max-width:767px) 
+{
+    .reset-password-container form 
+    {
+        padding: 30px;
+        width: 95%;
+    }
+}
+  
+.reset-password-container h1
+{
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 36px;
+    color: inherit;
+}
+  
+.reset-password-container .form-group:last-child 
+{
+    margin-bottom: 5px;
+}
+  
+.reset-password-container form .form-control 
+{
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+    outline: none;
+    color: inherit;
+    padding-left: 12px;
+    height: 42px;
+}
+  
+.reset-password-container form .form-control:focus 
+{
+    border: 1px solid #b2b2b2;
+}
+  
+.reset-password-container form textarea .form-control 
+{
+    min-height: 100px;
+    max-height: 260px;
+    padding-top: 10px;
+    resize: vertical;
+}
+  
+.reset-password-container form .btn 
+{
+    padding: 16px 32px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 0.9;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    line-height: 1;
+    outline: none !important;
+}
+  
+.reset-password-container form .btn:hover 
+{
+    opacity: 1;
+}
+  
+.reset-password-container form .btn:active 
+{
+    transform: translateY(1px);
+}
+  
+.reset-password-container form .btn-primary 
+{
+    background-color: #055ada !important;
+    margin-top: 15px;
+    color: #fff;
+}
+/*----------*/
 
 /* Messages flash */
 .alert
 {
     font-weight: bold;
 }
-/* Messages flash */
-
-/* Formulaire de contact */
-.no-bot-box  /* Captcha invisible */
-{
-    display: none;
-}
-/* Fin formulaire de contact
+/* Fin Messages flash */
 
 /* Panneau d'administration */
+.admin-panel-container
+{
+    margin-top: 1rem;
+    margin-bottom: 10rem;
+}
+
+.admin-title
+{
+    margin-top: 103px;
+}
+
+.infos-adminpanel p
+{
+    color: #10294d; 
+}
+
+.ok-icon
+{
+    color: green !important;
+}
+
+.warning-icon
+{
+    color: #df0e04 !important;
+}
+
+.icon-adminpanel-1 a, .icon-adminpanel-2 a
+{
+    color: #10294d;
+}
+
+.icon-adminpanel-1 a:hover, .icon-adminpanel-2 a:hover
+{
+    text-decoration: none;
+}
+
+.fa-users, .fa-book-open
+{
+    font-size: 135px;
+    color: #10294d;
+}
+
 /* Gestion des utilisateur */
+.gestion-users-container
+{
+    margin-top: 7rem;
+    margin-bottom: 13rem;
+}
+
+.modif-role-container
+{
+    margin-top: 8rem;
+}
+
 .modif-role-user 
 {
     color: #fff;
@@ -99,7 +941,13 @@ a:link, a:visited, a:hover, a:active
     text-decoration: none;
 }
 
-/* Gestion des annonces des utilisateurs */ 
+/* Gestion des annonces des utilisateurs */
+.annonces-admin-container
+{
+    margin-top: 7rem;
+    margin-bottom: 12rem;
+}
+
 .valider-annonce, .moderer-annonce
 {
     color: #fff;
@@ -129,6 +977,54 @@ a:link, a:visited, a:hover, a:active
 /* Fin panneau d'administration */
 
 /* Panneau profil utilisateur */
+@media (min-width:352px) and (max-width:992px)
+{
+    .user-panel-container
+    {
+        margin-bottom: 7rem;
+    }
+}
+
+@media (min-width:230px) and (max-width:351px)
+{
+    .user-panel-container
+    {
+        margin-bottom: 11rem;
+    }
+}
+
+.userpanel-title
+{
+    margin-top: 118px;
+}
+
+.icon-userpanel-1 li, .icon-userpanel-2 li
+{
+    list-style-type: none;
+    font-size: 23px;
+    line-height: 1.5em;
+    margin: 16px 0 16px 0;
+}
+
+.icon-userpanel-1 h2, .icon-userpanel-2 h2
+{
+    color: #10294d;
+}
+
+.items-panel-1 a, .items-panel-2 a
+{
+    border-radius: 300px;
+    background-color: #f05f40;
+    border-color: #f05f40;
+    color: #fff;
+}
+
+.items-panel-1 a:active, .items-panel-1 a:focus, .items-panel-1 a:hover, .items-panel-2 a:active, .items-panel-2 a:focus, .items-panel-2 a:hover
+{
+	color: #fff;
+	background-color: #ee4b28 !important;
+}
+
 .retour
 {
 	background-color: #ebebeb;
@@ -160,11 +1056,7 @@ a:link, a:visited, a:hover, a:active
 .fa-car, .fa-user-edit
 {
     font-size: 135px;
-}
-
-li 
-{
-    list-style-type: none;
+    color: #10294d;
 }
 
 .ui-icon-alert /* Boite de dialogue demandant la confirmation de suppression */
@@ -179,6 +1071,27 @@ li
 }
 
 /* Panneau de gestion des annonces */
+/* Bootstrap-Table */
+.gestion-annonces-container
+{
+    margin-top: 7rem;
+    margin-bottom: 10rem;
+}
+
+.options-links, .card-view-value
+{
+    line-height: 3.5em;
+}
+
+@media (max-width:317px) 
+{
+    .card-view-value a
+    {
+        font-size: 16px;
+    }
+}
+/* Fin Bootstrap-Table*/
+
 .annonce-active
 {
     color: green;
@@ -283,22 +1196,84 @@ li
 {
     text-decoration: none;
 }
-/* Fin panneau profil utilisateur */
 
-/* Formulaire Mot de passe oublié */
-.forgot-password
+.creer-annonce-container, .modif-annonce-container
 {
-    padding: 0.2rem 0.1rem;
+    margin-top: 7rem;
+    margin-bottom: 12rem;
 }
 
-/* Pied de page */
-footer 
+/* Modification profil utilisateur */
+.modif-profil-container
 {
-    position: absolute;
-    bottom: -145%;
-    text-align: center;
-    width: 100%;
-    height: 8%;
-    background: #333333;
-    color: #ffffff;
+    margin-top: 8rem;
+    margin-bottom: 12rem;
+}
+/* Fin Modification profil utilisateur */
+
+/* Modification Mot de passe (panneau profil utilisateur) */
+.modif-password-container
+{
+    margin-top: 8rem;
+}
+/* Fin Modification Mot de passe (panneau profil utilisateur) */
+
+/* Fin panneau profil utilisateur */
+
+/* Page d'erreur 404 */
+.error404-img-background
+{
+    background-image: url('/img/img-home-modif.jpg');
+    background-size: cover; 
+    background-attachment: fixed;
+}
+.error404-container
+{
+    padding: 167px 0 291px 0;
+    max-width: 24%;
+    line-height: 43px; 
+}
+.error404-container h1
+{
+    background: #373737d9;
+    border-radius: 800px;
+    line-height: 64px;
+}
+
+.error404-container p
+{
+    background: #373737d9;
+    border-radius: 800px;
+}
+
+@media (max-width:500px) 
+{
+    .error404-container
+    {
+        max-width: 100%;
+    }
+}
+
+@media (min-width:501px) and (max-width:715px)
+{
+    .error404-container
+    {
+        max-width: 71%;
+    }
+}
+
+@media (min-width:716px) and (max-width:985px)
+{
+    .error404-container
+    {
+        max-width: 63%;
+    }
+}
+
+@media (min-width:986px) and (max-width:1030px)
+{
+    .error404-container
+    {
+        max-width: 33%;
+    }
 }

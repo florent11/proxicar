@@ -2,24 +2,47 @@
 
 {% block title %}Annonces - Proxi'Car{% endblock %}
 
+{% block stylesheets %} 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+{% endblock %}
+
 {% block body %}
+    <div class="container annonces-container">
+        <h1 class="text-center section-heading">Nos Annonces</h1>
+        <hr>
 
-<div class="container">
-    <h1>Les Annonces Proxi'Car</h1>
+        {% for annonce in annonces|sort %}
+            {% if annonce.annavalider == false and annonce.annsignaler == false and annonce.annactive == true %}
+                <div class="card mb-3 shadow">
+                    <div class="row no-gutters">
+                        {% for image in annonce.images %}
+                            {% if loop.first %}
+                                <div class="col-md-4">
+                                    <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="card-img-top w-100 d-block" src="{{ asset('uploads/images/featured/'~image.imageName) }}"></a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <p class="card-text text-center date-publication">Publiée le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }}</p> 
+                                <p><a class="card-title link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p> 
+                                <p class="card-text">{{ annonce.kilometre }} KM</p>
+                                <p class="card-text">Prix: {{ annonce.annprix }} Euros</p>
+                                <p class="card-text">Année: {{ annonce.anneemodele }}</p>
+                                <p class="card-text">Boîte de vitesse: {{ annonce.boitedevitesse }}</p>
+                                <p class="card-text">Energie: {{ annonce.carburant }}</p>
+                                <p class="card-text">Région: {{ annonce.region }} | Département: {{ annonce.departement }} | {{ annonce.ville }}</p>
+                                <a class="voir-annonce" href="{{ path('annonce', {'slug': annonce.slug}) }}">Voir l'annonce</a> 
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        {{ knp_pagination_render(annonces) }}
+    </div>
+{% endblock %} 
 
-    {% for annonce in annonces|sort %}
-        {% if annonce.annavalider == false and annonce.annsignaler == false and annonce.annactive == true %}
-            <p> Mise en ligne le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }} </p> 
-            <p> Par {{ annonce.users.pseudo }} </p>
-            <p><a class="link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p>
-            <p> {{ annonce.anncontenu|raw }} </p>
-            <p> {{ annonce.annprix }} Euros </p>
-            <p> Région: {{ annonce.region }} </p>
-            <p> Département: {{ annonce.departement }} </p>
-            <p> Ville: {{ annonce.ville }} </p> 
-        {% endif %}
-    {% endfor %}
-    {{ knp_pagination_render(annonces) }}
-</div>
-
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 {% endblock %}
