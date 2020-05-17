@@ -10,7 +10,6 @@ class jsUpload
 			}  
 		
 			// Pour chaque fichiers, on récupère un fichier à la fois.
-			//const file = files[0];  
 			for(const file in files)
 			{
 				// On créé un FileReader 
@@ -27,12 +26,11 @@ class jsUpload
 						const imageElement = document.createElement('img');
 						imageElement.src = previewSrc;
 						$(".images").after('<div class="form-group img-uploaded"></div>')				
-						$(".img-uploaded:first-of-type").append(imageElement);
+						$(".images + .img-uploaded").append(imageElement);
 						$(imageElement).wrapAll('<a></a>');
-						$(".img-uploaded:first-of-type a").attr("href", imageElement.src).attr("data-fancybox", "gallery");
-						$(".img-uploaded:first-of-type img").width(200);
-						$(".img-uploaded:first-of-type a").after('<button>Supprimer</button>');
-						$(".img-uploaded:first-of-type button").addClass("btn btn-lg btn-danger button-new-img");
+						$(".images + .img-uploaded a").attr("href", imageElement.src).attr("data-fancybox", "gallery");
+						$(".images + .img-uploaded img").width(200);
+						$(".images + .img-uploaded button").addClass("btn btn-lg btn-danger button-new-img");
 					}, 
 					false, 
 				);  
@@ -41,12 +39,13 @@ class jsUpload
 				reader.readAsDataURL(files[file]);
 			} 
 		}
-		$("#modif_annonce_images").change(onFileChange);
-		
-		$('.button-new-img').click((event) => {
-			event.preventDefault();
-			delete files[file];
-		});
+
+		if ($("#modif_annonce_images").length == 1) {  // Si l'id "#modif_annonce_images" est présent sur la page, on exécute l'écouteur d'évènement (page "Modif Annonce")
+			$("#modif_annonce_images").change(onFileChange);
+		}
+		else {  // Sinon, on exécute l'autre écouteur d'évènement (page "Créer annonce")
+			$("#creer_annonce_images").change(onFileChange);	
+		}	
 	}
 }
 const fileUpload = new jsUpload;
