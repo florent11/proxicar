@@ -21,10 +21,25 @@ class AdminController extends AbstractController
      * 
      * @Route("/admin-panel", name="admin_panel")
      */
-    public function displayAdminPanel()
+    public function displayAdminPanel(UsersRepository $usersRepo, AnnoncesRepository $annoncesRepo)
     {
+        $usersTotal = $usersRepo->countUsersNumber();
+        $annoncesTotal = $annoncesRepo->countAnnoncesNumber();
+        $annoncesActivesTotal = $annoncesRepo->countAnnoncesActives();
+        $annoncesDesactiveesTotal = $annoncesRepo->countAnnoncesDesactivees();
+        $annoncesAValiderTotal = $annoncesRepo->countAnnoncesAValider();
+        $annonceAModererTotal = $annoncesRepo->countAnnoncesAModerer();
+        $annonceModereesTotal = $annoncesRepo->countAnnoncesModerees();
+        
         return $this->render('admin/admin_panel.html.twig', [
             'controller_name' => 'Administration',
+            'usersTotal' => $usersTotal,
+            'annoncesTotal' => $annoncesTotal,
+            'annoncesActives' => $annoncesActivesTotal,
+            'annoncesDesactivees' => $annoncesDesactiveesTotal,
+            'annoncesAValider' => $annoncesAValiderTotal,
+            'annoncesAModerer' => $annonceAModererTotal,
+            'annoncesModerees' => $annonceModereesTotal
         ]);
     }
 
@@ -83,11 +98,25 @@ class AdminController extends AbstractController
      * 
      * @Route("/supprimer-compte-user/{id}", name="supprimer_compte_user")
      */
-    public function deleteUser(Users $user)
+    public function deleteUser(Users $user, \Swift_Mailer $mailer)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($user);
         $entityManager->flush();
+
+        // Envoi de l'email
+        $message = (new \Swift_Message('Hello Email'))
+        ->setFrom('no-reply-proxicar@florentvila.com')
+        ->setTo($user->getEmail())
+        ->setSubject('Compte utilisateur supprimé')
+        ->setBody(
+            $this->renderView(
+                'emails/delete_user_by_admin.html.twig',
+                ['name' => $user->getName()]
+            ),
+            'text/html'
+        );
+        $mailer->send($message);
 
         $this->addFlash(
             'success',
@@ -121,7 +150,7 @@ class AdminController extends AbstractController
      * 
      * @Route("/valid-annonce-user/{id}", name="valid_annonce_user")
      */
-    public function validAnnonce(Annonces $annonce)
+    public function validAnnonce(Annonces $annonce, \Swift_Mailer $mailer)
     {
         $annonce->setAnnAValider(false);
         $annonce->setAnnActive(true);
@@ -129,6 +158,20 @@ class AdminController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($annonce);
         $entityManager->flush();
+
+        // Envoi de l'email
+        $message = (new \Swift_Message('Hello Email'))
+        ->setFrom('no-reply-proxicar@florentvila.com')
+        ->setTo($annonce->getUsers()->getEmail())
+        ->setSubject('Validation de votre annonce')
+        ->setBody(
+            $this->renderView(
+                'emails/valid_annonce.html.twig',
+                ['name' => $annonce->getUsers()->getName(), 'anntitre' => $annonce->getAnnTitre()]
+            ),
+            'text/html'
+        );
+        $mailer->send($message);
 
         $this->addFlash(
             'success',
@@ -169,12 +212,36 @@ class AdminController extends AbstractController
      * 
      * @Route("/delete-annonce-admin/{id}", name="delete_annonce_admin")
      */
-    public function deleteAnnonce(Annonces $annonce)
+    public function deleteAnnonce(Annonces $annonce, \Swift_Mailer $mailer)
     {
+        // Procédure de suppression des images...
+        $images = $annonce->getImages();
+        $deleteImg = '';  // On initialise la variable
+        foreach ($images as $image) {
+            // Suppression du Stockage sur Disque Dur
+            $fichier = $image->getImageName();
+            $deleteImg = unlink($this->getParameter('images_annonce') . "/" . $fichier);
+        }
+    
+        // Suppression de l'écriture en Base de Données de l'annonce et des images liées à celle-ci.
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($annonce);
         $entityManager->flush();
 
+        // Envoi de l'email
+        $message = (new \Swift_Message('Hello Email'))
+        ->setFrom('no-reply-proxicar@florentvila.com')
+        ->setTo($annonce->getUsers()->getEmail())
+        ->setSubject('Annonce supprimée')
+        ->setBody(
+            $this->renderView(
+                'emails/delete_annonce_by_admin.html.twig',
+                ['name' => $annonce->getUsers()->getName(), 'anntitre' => $annonce->getAnnTitre()]
+            ),
+            'text/html'
+        );
+        $mailer->send($message);
+        
         $this->addFlash(
             'success',
             'L\'annonce de l\'utilisateur est supprimée.'

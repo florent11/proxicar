@@ -30,8 +30,9 @@ class ContactController extends AbstractController
 
                 // do anything else you need here, like send an email
                 $message = (new \Swift_Message('Hello Email'))
-                ->setFrom($contact['email'])
+                ->setFrom('no-reply-proxicar@florentvila.com')
                 ->setTo('proxicar@florentvila.com')
+                ->setReplyTo($contact['email'])
                 ->setSubject('Message via formulaire de contact')
                 ->setBody(
                     $this->renderView(

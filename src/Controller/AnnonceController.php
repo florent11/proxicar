@@ -8,8 +8,8 @@ use App\Entity\Images;
 use App\Entity\Annonces;
 use App\Form\CreerAnnonceType;
 use App\Form\ModifAnnonceType;
+use App\Form\ContactAnnonceurType;
 use App\Repository\AnnoncesRepository;
-use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,8 +49,9 @@ class AnnonceController extends AbstractController
         $annonce = $this->getDoctrine()->getRepository(Annonces::class)->findOneBy(['slug' => $slug]);
         $images = $annonce->getImages();
 
-       //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on affiche l'annonce uniquement pour lui. L'admin du site peut aussi voir l'annonce.
+        //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on affiche l'annonce uniquement pour lui. L'admin du site peut aussi voir l'annonce.
         if ($this->isGranted('ROLE_USER') && $this->getUser() == $annonce->getUsers() || $this->isGranted('ROLE_ADMIN')) {
+
             return $this->render('annonce/annonce_article.html.twig', [
                 'annonce' => $annonce,
                 'images' => $images
@@ -124,6 +125,58 @@ class AnnonceController extends AbstractController
     }
 
     /**
+     * Formulaire pour envoyer un message à l'annonceur
+     * 
+     * @Route("/annonce/{slug}/contact-annonceur", name="contact_annonceur")
+     */
+    public function contactAnnonceur(Request $request, \Swift_Mailer $mailer, $slug)
+    {
+        $form = $this->createForm(ContactAnnonceurType::class);
+        $form->handleRequest($request);
+        
+        $annonce = $this->getDoctrine()->getRepository(Annonces::class)->findOneBy(['slug' => $slug]);
+        $emailAnnonceur = $annonce->getUsers()->getEmail();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $contact = $form->getData();
+            if (empty($contact['accept_form'])) {  // Si le champ 'anti-captcha' est vide, on envoie l'email'.
+                $this->addFlash(
+                    'notice',
+                    'Votre message a été envoyé.'
+                );
+
+                // do anything else you need here, like send an email
+                $message = (new \Swift_Message('Hello Email'))
+                ->setFrom('no-reply-proxicar@florentvila.com')
+                ->setTo($emailAnnonceur)
+                ->setReplyTo($contact['email'])
+                ->setSubject('Proxi\'Car - Message concernant votre annonce')
+                ->setBody(
+                    $this->renderView(
+                        // templates/emails/registration.html.twig
+                        'emails/contact_mail_annonceur.html.twig',
+                        ['titre_annonce' => $annonce->getAnnTitre(), 'name' => $contact['name'], 'email' => $contact['email'], 'message' => $contact['message']]
+                    ),
+                    'text/html'
+                );
+                $mailer->send($message);
+            }
+            else {  // Si le champ 'anti-captcha' est rempli, on n'envoie pas l'email'.
+                $this->addFlash(
+                'error',
+                'Votre message n\'a pas été envoyé.'
+                );
+            }
+            return $this->redirectToRoute('annonce', ['slug' => $slug]);
+        }
+        
+        return $this->render('annonce/contact_annonceur.html.twig', [
+            'contactAnnonceurForm' => $form->createView(),
+            'annonce' => $annonce
+        ]);
+    }
+
+    /**
      * Affichage du panneau de Gestion des annonces publiées
      * 
      * @IsGranted("ROLE_USER")
@@ -160,11 +213,14 @@ class AnnonceController extends AbstractController
 
             $images = $form->get('images')->getData();
             
-            if (count($images) < 8) {
+            if (count($images) < 8) {  // Si le nombre d'images est inférieur à 8, on envoie le formulaire
+                // Ajout des images
                 foreach ($images as $image) {
+                    // Stockage sur Disque Dur
                     $fichier = md5(uniqid()).'.'.$image->guessExtension();
                     $image->move($this->getParameter('images_annonce'), $fichier);
 
+                    // Ecriture en Base de Données
                     $img = new Images;
                     $img->setImageName($fichier);
                     $annonce->addImage($img);
@@ -181,7 +237,7 @@ class AnnonceController extends AbstractController
                 
                 return $this->redirectToRoute('user_panel');
             }
-            else {
+            else {  // Sinon on regénere la vue avec un message flash et avec la saisie de l'utilisateur conservée
                 $formData = $form->getData();
 
                 $this->addFlash(
@@ -218,23 +274,14 @@ class AnnonceController extends AbstractController
             $annonce->setAnnSignaler(false);
             $annonce->setAnnModeree(false);
 
-            // Supression des anciennes images en stockage Disque Dur et en Base de Donnée
-            $imagesOldDb = $this->getDoctrine()->getRepository(Annonces::class)->find($id);
-            foreach ($imagesOld as $imageOld) {
-                $fichier = md5(uniqid()).'.'.$image->guessExtension();
-                $imageOld->remove($this->getParameter('images_annonce'), $fichier);
-            }
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($imagesRepo);
-            $entityManager->flush();
-
-            //Ajout des nouvelles images
+            // Ajout des nouvelles images
             $images = $form->get('images')->getData();
             foreach ($images as $image) {
-                $fichier = md5(uniqid()).'.'.$image->guessExtension();
+                // Stockage sur Disque Dur
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
                 $image->move($this->getParameter('images_annonce'), $fichier);
 
+                // Ecriture en Base de Données
                 $img = new Images;
                 $img->setImageName($fichier);
                 $annonce->addImage($img);
@@ -253,7 +300,28 @@ class AnnonceController extends AbstractController
         }
         return $this->render('annonce/modif_annonce.html.twig', [
             'modifAnnonceForm' => $form->createView(),
+            'annonce' => $annonce
         ]);
+    }
+
+    /**
+    * Suppression d'une image (Route pour AJAX)
+    *
+    * @Route("/supprimer-image/{id}", name="supprimer_image", methods={"DELETE"})
+    */
+    public function removeImage(Images $image)
+    {
+        // Procédure de suppression des images...
+        $deleteImg = '';  // On initialise la variable
+        // Suppression du Stockage sur Disque Dur
+        $fichier = $image->getImageName();
+        $deleteImg = unlink($this->getParameter('images_annonce') . "/" . $fichier);
+
+        // Suppression de l'écriture en Base de Données des images.
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($image);
+        $entityManager->flush();
+        return new Response('ok');
     }
 
     /**
@@ -265,8 +333,18 @@ class AnnonceController extends AbstractController
      */
     public function deleteAnnonce(Annonces $annonce)
     {
-        //Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on supprime l'annonce.
+        // Si l'Id de l'utilisateur connecté est égal à l'Id de l'utilisateur-auteur de l'annonce, on supprime l'annonce.
         if ($this->getUser() == $annonce->getUsers()) {
+            // Procédure de suppression des images...
+            $images = $annonce->getImages();
+            $deleteImg = '';  // On initialise la variable
+            foreach ($images as $image) {
+                // Suppression du Stockage sur Disque Dur
+                $fichier = $image->getImageName();
+                $deleteImg = unlink($this->getParameter('images_annonce') . "/" . $fichier);
+            }
+
+            // Suppression de l'écriture en Base de Données de l'annonce et des images liées à celle-ci.
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($annonce);
             $entityManager->flush();
@@ -278,7 +356,7 @@ class AnnonceController extends AbstractController
 
             return $this->redirectToRoute('gestion_annonces');
         }
-        else { //Si les Id comparés sont différents, on affiche un message d'erreur.
+        else { // Si les Id comparés sont différents, on affiche un message d'erreur.
             $this->addFlash(
                 'error',
                 'Erreur - L\'annonce que vous souhaitez supprimer appartient à un utilisateur du site.'
@@ -313,7 +391,7 @@ class AnnonceController extends AbstractController
                 $user = $annonce->getUsers(); // On récupère les infos de l'utilisateur de l'annonce
 
                 $message = (new \Swift_Message('Hello Email'))
-                ->setFrom('proxicar@florentvila.com')
+                ->setFrom('no-reply-proxicar@florentvila.com')
                 ->setTo($user->getEmail())
                 ->setSubject('Désactivation automatique de votre annonce')
                 ->setBody(

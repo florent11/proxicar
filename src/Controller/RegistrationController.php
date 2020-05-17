@@ -48,7 +48,7 @@ class RegistrationController extends AbstractController
 
                 // do anything else you need here, like send an email
                 $message = (new \Swift_Message('Hello Email'))
-                ->setFrom('proxicar@florentvila.com')
+                ->setFrom('no-reply-proxicar@florentvila.com')
                 ->setTo($user->getEmail())
                 ->setSubject('Confirmation d\'inscription - Proxi\'Car')
                 ->setBody(

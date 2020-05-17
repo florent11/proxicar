@@ -125,7 +125,7 @@ class AccountController extends AbstractController
 
                 // Envoi de l'email
                 $message = (new \Swift_Message('Hello Email'))
-                ->setFrom('proxicar@florentvila.com')
+                ->setFrom('no-reply-proxicar@florentvila.com')
                 ->setTo($emailAddress['email'])
                 ->setSubject('Réinitialisation du Mots de passe')
                 ->setBody(
@@ -149,6 +149,8 @@ class AccountController extends AbstractController
                     'error',
                     'L\'adresse email saisie n\'existe pas dans notre base de données.'
                 );
+
+                return $this->redirectToRoute('app_login');
             }
         }
 
