@@ -17,7 +17,7 @@ class HomeController extends AbstractController
      */
     public function homeDisplay(Request $request, AnnoncesRepository $annoncesRepo): Response 
     {
-        $annonces = $this->getDoctrine()->getRepository(Annonces::class)->findBy([], ['id' => 'desc'], 5);
+        $annonces = $this->getDoctrine()->getRepository(Annonces::class)->findBy([], ['id' => 'desc'], 6);
         
         $searchForm = $this->createForm(SearchType::class);
         $searchForm->handleRequest($request);
@@ -29,7 +29,7 @@ class HomeController extends AbstractController
         }
         
         return $this->render('home/index.html.twig', [
-            'title_home' => "Bienvenue sur Proxi'Car, le site d'annonces pour la vente de véhicules d'occasions",
+            'title_home' => "Bienvenue sur Proxi'Car",
             'annonces' => $annonces,
             'searchForm' => $searchForm->createView(),
             'searchResult' => $resultSearchData 

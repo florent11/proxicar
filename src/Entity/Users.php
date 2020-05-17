@@ -215,7 +215,7 @@ class Users implements UserInterface
         return $this->num_tel;
     }
 
-    public function setNumTel(string $num_tel): self
+    public function setNumTel(?string $num_tel): self
     {
         $this->num_tel = $num_tel;
 
