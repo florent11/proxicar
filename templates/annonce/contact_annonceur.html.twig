@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Envoyer un message - Proxi'Car{% endblock %}
+
+{% block body %}
+    <div class="contact-annonceur-background">
+        <div class="container contact-annonceur-container">
+            <a href="{{ path('annonce', {'slug': annonce.slug}) }}" class="fas fa-angle-left retour mb-3"> Retour à l'annonce</a>
+            {{ form_start(contactAnnonceurForm) }}
+                <h1 class="text-center">Contacter l'annonceur</h1>
+                <hr>
+                <div class="no-bot-box">{{ form_row(contactAnnonceurForm.accept_form) }}</div> <!-- Captcha invisible -->
+                <div class="form-group">{{ form_row(contactAnnonceurForm.name) }}</div> 
+                <div class="form-group">{{ form_row(contactAnnonceurForm.email) }}</div>
+                <div class="form-group">{{ form_row(contactAnnonceurForm.message) }}</div>
+                <button class="btn btn-lg btn-primary" type="submit">Envoyer</button>
+            {{ form_end(contactAnnonceurForm) }}
+        </div>
+    </div>
+{% endblock %}
