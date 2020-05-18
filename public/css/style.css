@@ -82,12 +82,6 @@ footer li
     margin-bottom: 14rem;
 }
 
-.annonce-article-container .alert
-{
-    margin-top: 8rem !important;
-    margin-bottom: 3rem !important;
-}
-
 .flex-direction-nav a:before
 {
     font-size: 30px !important;
