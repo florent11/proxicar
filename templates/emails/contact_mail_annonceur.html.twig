@@ -2,9 +2,10 @@
 <html>
     <head>
         <style type="text/css">
-            body 
+            .container-background 
             {
                 background-color: #333;
+                padding-bottom: 6%;
             }
 
             .container 
@@ -24,6 +25,7 @@
                 font-weight: bold;
                 text-align: center;
                 padding-bottom: 1%;
+                padding-top:1%;
             }
 
             #message 
@@ -55,15 +57,17 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="header">
-                <img class="logo" src="https://florentvila.com/images/logo-mini-proxicar.jpg">
+        <div class="container-background">
+            <div class="container">
+                <div class="header">
+                    <img class="logo" src="https://florentvila.com/images/logo-mini-proxicar.jpg">
+                </div>
+                <div id="message">
+                    <h1>Message de {{ name }} | Email: {{ email }}</h1>
+                    <h1>Votre Annonce: "{{ titre_annonce }}"</h1>
+                    <p>{{ message|raw }}</p>
+                </div> 
             </div>
-            <div id="message">
-                <h1>Message de {{ name }} | Email: {{ email }}</h1>
-                <h1>Votre Annonce: "{{ titre_annonce }}"</h1>
-                <p>{{ message|raw }}</p>
-            </div> 
         </div>
     </body>
 </html>

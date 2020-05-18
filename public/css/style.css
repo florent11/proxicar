@@ -977,11 +977,16 @@ footer li
 /* Fin panneau d'administration */
 
 /* Panneau profil utilisateur */
+.user-panel-container
+{
+    margin-bottom: 17rem;
+}
+
 @media (min-width:352px) and (max-width:992px)
 {
     .user-panel-container
     {
-        margin-bottom: 7rem;
+        margin-bottom: 9rem;
     }
 }
 
@@ -989,7 +994,7 @@ footer li
 {
     .user-panel-container
     {
-        margin-bottom: 11rem;
+        margin-bottom: 14rem;
     }
 }
 

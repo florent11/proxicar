@@ -72,7 +72,7 @@
                     <ul class="slides">
                         {% for image in annonce.images %}  
                             <li>
-                                <img src="{{ asset('uploads/images/featured/'~image.imageName)|imagine_filter('img_slide') }}" />
+                                <img src="{{ asset('uploads/images/featured/'~image.imageName)|imagine_filter('img_slide') }}">
                             </li>
                         {% endfor %}
                     </ul>

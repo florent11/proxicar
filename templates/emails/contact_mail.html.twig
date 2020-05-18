@@ -2,9 +2,10 @@
 <html>
     <head>
         <style type="text/css">
-            body 
+            .container-background
             {
                 background-color: #333;
+                padding-bottom: 6%;
             }
 
             .container 
@@ -24,6 +25,7 @@
                 font-weight: bold;
                 text-align: center;
                 padding-bottom: 1%;
+                padding-top:1%;
             }
 
             #message 
@@ -51,6 +53,7 @@
                 font-weight: normal;
                 line-height: 100%;
             }
+
             #date-consent
             {
                 display: block;
@@ -62,15 +65,17 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="header">
-                <img class="logo" src="https://florentvila.com/images/logo-mini-proxicar.jpg">
+        <div class="container-background">
+            <div class="container">
+                <div class="header">
+                    <img class="logo" src="https://florentvila.com/images/logo-mini-proxicar.jpg">
+                </div>
+                <div id="message">
+                    <h1>Message de {{ name }} : {{ email }}</h1>
+                    <p>{{ message|raw }}</p>
+                    <p id="date-consent">Consentement RGPD collecté le {{ date }}.</p>
+                </div> 
             </div>
-            <div id="message">
-                <h1>Message de {{ name }} : {{ email }}</h1>
-                <p>{{ message|raw }}</p>
-                <p id="date-consent">Consentement RGPD collecté le {{ date }}.</p>
-            </div> 
         </div>
     </body>
 </html>
