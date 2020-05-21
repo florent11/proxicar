@@ -63,42 +63,42 @@ class AnnDialogDelete
                 isTouch = $("html").hasClass("touch");
 
             // responsive width & height
-        var resize = function () {
+            var resize = function () {
 
-            // check if responsive
-            // dependent on modernizr for device detection / html.touch
-            if (self.options.responsive === true || (self.options.responsive === "touch" && isTouch)) {
-                var elem = self.element,
-                wHeight = $(window).height(),
-                wWidth = $(window).width(),
-                dHeight = elem.parent().outerHeight(),
-                dWidth = elem.parent().outerWidth(),
-                setHeight = Math.min(wHeight * self.options.scaleH, oHeight),
-                setWidth = Math.min(wWidth * self.options.scaleW, oWidth);
+                // check if responsive
+                // dependent on modernizr for device detection / html.touch
+                if (self.options.responsive === true || (self.options.responsive === "touch" && isTouch)) {
+                    var elem = self.element,
+                    wHeight = $(window).height(),
+                    wWidth = $(window).width(),
+                    dHeight = elem.parent().outerHeight(),
+                    dWidth = elem.parent().outerWidth(),
+                    setHeight = Math.min(wHeight * self.options.scaleH, oHeight),
+                    setWidth = Math.min(wWidth * self.options.scaleW, oWidth);
 
-                // check & set height
-                if ((oHeight + 100) > wHeight || elem.hasClass("resizedH")) {
-                elem.dialog("option", "height", setHeight).parent().css("max-height", setHeight);
-                elem.addClass("resizedH");
+                    // check & set height
+                    if ((oHeight + 100) > wHeight || elem.hasClass("resizedH")) {
+                        elem.dialog("option", "height", setHeight).parent().css("max-height", setHeight);
+                        elem.addClass("resizedH");
+                    }
+
+                    // check & set width
+                    if ((oWidth + 100) > wWidth || elem.hasClass("resizedW")) {
+                        elem.dialog("option", "width", setWidth).parent().css("max-width", setWidth);
+                        elem.addClass("resizedW");
+                    }
+
+                    // only recenter & add overflow if dialog has been resized
+                    if (elem.hasClass("resizedH") || elem.hasClass("resizedW")) {
+                        elem.dialog("option", "position", "center");
+                        elem.css("overflow", "auto");
+                    }
                 }
 
-                // check & set width
-                if ((oWidth + 100) > wWidth || elem.hasClass("resizedW")) {
-                elem.dialog("option", "width", setWidth).parent().css("max-width", setWidth);
-                elem.addClass("resizedW");
+                // add webkit scrolling to all dialogs for touch devices
+                if (isTouch) {
+                    elem.css("-webkit-overflow-scrolling", "touch");
                 }
-
-                // only recenter & add overflow if dialog has been resized
-                if (elem.hasClass("resizedH") || elem.hasClass("resizedW")) {
-                elem.dialog("option", "position", "center");
-                elem.css("overflow", "auto");
-                }
-            }
-
-            // add webkit scrolling to all dialogs for touch devices
-            if (isTouch) {
-                elem.css("-webkit-overflow-scrolling", "touch");
-            }
             };
 
             // call resize()
@@ -106,60 +106,60 @@ class AnnDialogDelete
 
             // resize on window resize
             $(window).on("resize", function () {
-            resize();
+                resize();
             });
 
             // resize on orientation change
             if (window.addEventListener) {  // Add extra condition because IE8 doesn't support addEventListener (or orientationchange)
-            window.addEventListener("orientationchange", function () {
-                resize();
-            });
+                window.addEventListener("orientationchange", function () {
+                    resize();
+                });
             }
 
             // hide titlebar
             if (!self.options.showTitleBar) {
-            self.uiDialogTitlebar.css({
+                self.uiDialogTitlebar.css({
                 "height": 0,
                 "padding": 0,
                 "background": "none",
                 "border": 0
-            });
-            self.uiDialogTitlebar.find(".ui-dialog-title").css("display", "none");
+                });
+                self.uiDialogTitlebar.find(".ui-dialog-title").css("display", "none");
             }
 
             //hide close button
             if (!self.options.showCloseButton) {
-            self.uiDialogTitlebar.find(".ui-dialog-titlebar-close").css("display", "none");
+                self.uiDialogTitlebar.find(".ui-dialog-titlebar-close").css("display", "none");
             }
 
             // close on clickOut
             if (self.options.clickOut && !self.options.modal) {
-            // use transparent div - simplest approach (rework)
-            $('<div id="dialog-overlay"></div>').insertBefore(self.element.parent());
-            $('#dialog-overlay').css({
-                "position": "fixed",
-                "top": 0,
-                "right": 0,
-                "bottom": 0,
-                "left": 0,
-                "background-color": "transparent"
-            });
-            $('#dialog-overlay').click(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                self.close();
-            });
-            // else close on modal click
+                // use transparent div - simplest approach (rework)
+                $('<div id="dialog-overlay"></div>').insertBefore(self.element.parent());
+                $('#dialog-overlay').css({
+                    "position": "fixed",
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0,
+                    "background-color": "transparent"
+                });
+                $('#dialog-overlay').click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    self.close();
+                });
+                // else close on modal click
             } 
             else if (self.options.clickOut && self.options.modal) {
-            $('.ui-widget-overlay').click(function (e) {
-                self.close();
-            });
+                $('.ui-widget-overlay').click(function (e) {
+                    self.close();
+                });
             }
 
             // add dialogClass to overlay
             if (self.options.dialogClass) {
-            $('.ui-widget-overlay').addClass(self.options.dialogClass);
+                $('.ui-widget-overlay').addClass(self.options.dialogClass);
             }
         };
         //end open
@@ -173,11 +173,11 @@ class AnnDialogDelete
 
             // remove dialogClass to overlay
             if (self.options.dialogClass) {
-            $('.ui-widget-overlay').removeClass(self.options.dialogClass);
+                $('.ui-widget-overlay').removeClass(self.options.dialogClass);
             }
             //remove clickOut overlay
             if ($("#dialog-overlay").length) {
-            $("#dialog-overlay").remove();
+                $("#dialog-overlay").remove();
             }
         };
         //end close
