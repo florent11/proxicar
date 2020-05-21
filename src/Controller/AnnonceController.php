@@ -26,7 +26,7 @@ class AnnonceController extends AbstractController
      */
     public function listAnnonces(Request $request, PaginatorInterface $paginator)
     {
-        $annonces_repo = $this->getDoctrine()->getRepository(Annonces::class)->findAll();
+        $annonces_repo = $this->getDoctrine()->getRepository(Annonces::class)->findBy(['ann_a_valider' => false, 'ann_signaler' => false, 'ann_active' => true]);
 
         $annonces = $paginator->paginate(
             $annonces_repo, // Requête contenant les données à paginer (ici nos annonces)
