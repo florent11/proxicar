@@ -37,7 +37,7 @@ body, footer
 
 .background-header
 {
-    background-image: url("/img/img-home-modif.jpg");
+    background-image: url("../img/img-home-modif.jpg");
 }
 
 .welcome-title, .welcome-description
@@ -146,7 +146,7 @@ footer li
 /* Formulaire pour envoyer un message à l'annonceur */
 .contact-annonceur-background
 {
-    background-image: url('/img/img-contact-annonceur.jpg');
+    background-image: url('../img/img-contact-annonceur.jpg');
     background-size: cover; 
     background-attachment: fixed;
 }
@@ -274,7 +274,7 @@ footer li
 
 .contact-background
 {
-    background-image: url('/img/img-contact.jpg');
+    background-image: url('../img/img-contact.jpg');
     background-size: cover; 
     background-attachment: fixed;
 }
@@ -393,7 +393,7 @@ footer li
 /* Inscription */
 .registration-background
 {
-    background-image: url('/img/img-inscription.jpg');
+    background-image: url('../img/img-inscription.jpg');
     background-size: cover; 
     background-attachment: fixed;
 }
@@ -506,7 +506,7 @@ footer li
 /* Connexion */
 .login-background
 {
-    background-image: url('/img/img-connexion.jpg');
+    background-image: url('../img/img-connexion.jpg');
     background-size: cover; 
     background-attachment: fixed;
 }
@@ -612,7 +612,7 @@ footer li
 /* Mot de passe oublié */
 .forgot-password-background
 {
-    background-image: url('/img/img-connexion.jpg');
+    background-image: url('../img/img-connexion.jpg');
     background-size: cover; 
     background-attachment: fixed;
 }
@@ -717,7 +717,7 @@ footer li
 /* Réinitialisation du Mot de passe */
 .reset-password-background
 {
-    background-image: url('/img/img-connexion.jpg');
+    background-image: url('../img/img-connexion.jpg');
     background-size: cover; 
     background-attachment: fixed;
 }
@@ -1014,7 +1014,7 @@ footer li
 {
     border-radius: 300px;
     background-color: #f05f40;
-    border-color: #f05f40;
+    border-color: #ee4b28;
     color: #fff;
 }
 
@@ -1222,7 +1222,7 @@ footer li
 /* Page d'erreur 404 */
 .error404-img-background
 {
-    background-image: url('/img/img-home-modif.jpg');
+    background-image: url('../img/img-home-modif.jpg');
     background-size: cover; 
     background-attachment: fixed;
 }

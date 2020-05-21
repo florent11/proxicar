@@ -41,7 +41,7 @@
             <div class="col-lg-8 mx-auto">
                 <p data-aos="zoom-out-right" data-aos-duration="3000" class="text-faded mb-5 welcome-description">Petites annonces pour la vente de véhicules d'occasions entre particuliers</p>
             </div>
-            <a class="btn btn-primary btn-xl js-scroll-trigger" role="button" href="#search-annonce">Rechercher des annonces</a></div>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" role="button" href="#search-annonce">Rechercher des annonces</a>
         </div>
     </header>
         
@@ -49,7 +49,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-lg-12">
-                    <h1 class="text-center section-heading">Rechercher des annonces</h1>
+                    <h2 class="h1 text-center section-heading">Rechercher des annonces</h2>
                     <hr>
                     {{ form_start(searchForm, {'action': '#search-result'}) }} 
                         <div class="form-group">{{ form_row(searchForm.mots_cles) }}</div>
@@ -72,7 +72,7 @@
                             {% if searchResult |length == 0 %}
                                 <p>Aucun résultat pour votre recherche.</p>
                             {% else %}
-                                <h1 class="text-center section-heading">Résultat de la recherche</h1>
+                                <h2 class="h1 text-center section-heading">Résultat de la recherche</h2>
                                 <hr>
                                 {% for annonce in searchResult %}
                                     <div class="card mb-3 shadow">
@@ -109,7 +109,7 @@
     
     <section class="card-group pt-3 mb-5">
         <div class="col-md-12 col-lg-12">
-            <h1 class="text-center section-heading">Dernières Annonces</h1>
+            <h2 class="h1 text-center section-heading">Dernières Annonces</h2>
             <hr>
         </div>
         {% for annonce in annonces %}
@@ -118,7 +118,7 @@
                     <div class="card m-3 shadow">
                         {% for image in annonce.images %}
                             {% if loop.first %}
-                                <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="card-img-top w-100 d-block" src="{{ asset('uploads/images/featured/'~image.imageName) }}"></a>
+                                <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="card-img-top w-100 d-block" alt="image" src="{{ asset('uploads/images/featured/'~image.imageName) }}"></a>
                             {% endif %}
                         {% endfor %}
                         <div class="card-body">
