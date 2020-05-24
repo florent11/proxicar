@@ -113,23 +113,21 @@
             <hr>
         </div>
         {% for annonce in annonces %}
-            {% if annonce.annavalider == false and annonce.annsignaler == false and annonce.annactive == true %}
-                <div class="col-md-4">
-                    <div class="card m-3 shadow">
-                        {% for image in annonce.images %}
-                            {% if loop.first %}
-                                <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="card-img-top w-100 d-block" alt="image" src="{{ asset('uploads/images/featured/'~image.imageName) }}"></a>
-                            {% endif %}
-                        {% endfor %}
-                        <div class="card-body">
-                            <p class="card-text text-center date-publication"> Publiée le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }}</p>
-                            <p><a class="card-title link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p>
-                            <p class="card-text"> Prix: {{ annonce.annprix }} Euros</p>
-                            <a class="voir-annonce" href="{{ path('annonce', {'slug': annonce.slug}) }}">Voir l'annonce</a> 
-                        </div>
+            <div class="col-md-4">
+                <div class="card m-3 shadow">
+                    {% for image in annonce.images %}
+                        {% if loop.first %}
+                            <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="card-img-top w-100 d-block" alt="image" src="{{ asset('uploads/images/featured/'~image.imageName) }}"></a>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="card-body">
+                        <p class="card-text text-center date-publication"> Publiée le {{ annonce.anndate|localizeddate('none', 'none', null, null, 'd MMMM Y') }}</p>
+                        <p><a class="card-title link" href="{{ path('annonce', {'slug': annonce.slug}) }}">{{ annonce.anntitre }}</a></p>
+                        <p class="card-text"> Prix: {{ annonce.annprix }} Euros</p>
+                        <a class="voir-annonce" href="{{ path('annonce', {'slug': annonce.slug}) }}">Voir l'annonce</a> 
                     </div>
                 </div>
-            {% endif %}
+            </div>
         {% endfor %}
     </section>
 {% endblock %}

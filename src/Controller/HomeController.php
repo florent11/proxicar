@@ -17,7 +17,7 @@ class HomeController extends AbstractController
      */
     public function homeDisplay(Request $request, AnnoncesRepository $annoncesRepo): Response 
     {
-        $annonces = $this->getDoctrine()->getRepository(Annonces::class)->findBy([], ['id' => 'desc'], 6);
+        $annonces = $this->getDoctrine()->getRepository(Annonces::class)->findBy(['ann_a_valider' => false, 'ann_signaler' => false, 'ann_active' => true], ['id' => 'desc'], 6);
         
         $searchForm = $this->createForm(SearchType::class);
         $searchForm->handleRequest($request);

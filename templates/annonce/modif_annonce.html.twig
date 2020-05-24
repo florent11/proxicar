@@ -53,7 +53,7 @@
                     <div class="form-group images">{{ form_row(modifAnnonceForm.images) }}</div>
                     {% for image in annonce.images %}
                         <div class="form-group">
-                            <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img class="" src="{{ asset('uploads/images/featured/'~image.imageName)|imagine_filter('carre') }}" alt="Image"></a>
+                            <a data-fancybox="gallery" href="{{ asset('uploads/images/featured/'~image.imageName) }}"><img src="{{ asset('uploads/images/featured/'~image.imageName)|imagine_filter('carre') }}" alt="Image"></a>
                             <button class="btn btn-lg btn-danger delete-image mt-3 ml-3" data-url="{{ path('supprimer_image', {'id': image.id}) }}" type="submit">Supprimer</button>
                         </div> 
                     {% endfor %}
