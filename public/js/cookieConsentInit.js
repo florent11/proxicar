@@ -23,4 +23,4 @@ class cookieConsentInit
     }
 }
 const cookieConsent = new cookieConsentInit;
-cookieConsent.cookieConsentBox()
+cookieConsent.cookieConsentBox();
